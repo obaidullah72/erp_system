@@ -1,0 +1,69 @@
+# Local environment and secrets (keep safe examples tracked)
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.local
+.aws/
+*.pem
+*.key
+
+# JavaScript dependencies and build outputs
+node_modules/
+dist/
+dist-ssr/
+.vite/
+coverage/
+*.tsbuildinfo
+
+# Python environments, bytecode, and tooling caches
+venv/
+.venv/
+env/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+build/
+
+# Logs and runtime files
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+*.pid
+*.pid.lock
+celerybeat-schedule*
+
+# Local databases, uploads, and backups
+*.sqlite
+*.sqlite3
+*.db
+*.dump
+backups/
+uploads/
+postgres_data/
+redis_data/
+
+# Editor and operating-system files
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*~
