@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 function initialTheme() {
   try {
@@ -10,8 +10,9 @@ function initialTheme() {
 
 export function useTheme() {
   const [theme, setTheme] = useState(initialTheme)
-  // Keep the root synchronized before paint, without an effect-driven state update.
-  document.documentElement.classList.toggle('dark', theme === 'dark')
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', theme === 'dark')
+  }, [theme])
   function toggleTheme() {
     const next = theme === 'dark' ? 'light' : 'dark'
     setTheme(next)

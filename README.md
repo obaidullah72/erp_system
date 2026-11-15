@@ -36,6 +36,8 @@ Open http://localhost:5173/system. Vite proxies `/api` to `127.0.0.1:8000`; cont
 
 Without PostgreSQL, the backend starts and liveness returns 200; readiness returns 503. No tables are created during startup. `make migrate` creates only the Alembic revision table at this phase's empty baseline.
 
+The first `npm install` resolves the frontend dependencies and creates `frontend/package-lock.json`. Commit the resulting lockfile and use `npm ci` for repeatable CI builds. The stale starter lockfile was removed because it did not describe the required stack; dependency downloads were unavailable during implementation.
+
 ## Verification
 
 ```sh
