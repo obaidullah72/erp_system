@@ -1,0 +1,9 @@
+# Optional production-mode settings; this is not a complete production deployment.
+# See docs/deployment.md for TLS, secrets, database access, and release requirements.
+services:
+  api:
+    environment:
+      ENVIRONMENT: production
+  migrate:
+    environment:
+      ENVIRONMENT: production

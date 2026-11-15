@@ -1,16 +1,7 @@
-# React + Vite
+# Frontend foundation
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React + Vite, JavaScript, Tailwind CSS v4 (Vite plugin and CSS import), React Router DOM, Axios, React Hook Form, Zod, Recharts, and Lucide React.
 
-Currently, two official plugins are available:
+Run `npm ci`, then `npm run dev` from this directory. See the root README for backend/database setup. `npm run build` creates `dist`; `npm run preview` only serves static output and does not provide the development API proxy. Use Compose Nginx or a separately configured `VITE_API_URL` for API access from the built app.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Routes: `/system` (real health checks), `/foundation` (scope and memory-only validation form), `/roadmap` (planned phases). No business dashboards or simulated records. Chart samples exist only in page memory; failures are gaps, never zero-duration successes.

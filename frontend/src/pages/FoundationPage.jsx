@@ -1,0 +1,13 @@
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+
+const schema = z.object({ label: z.string().trim().min(2, 'Use at least 2 characters.').max(60, 'Use at most 60 characters.') })
+const capabilities = ['React routing, responsive shell, and theme selection', 'Axios API client and real service health checks', 'FastAPI settings, structured logs, and safe error responses', 'PostgreSQL sessions and Alembic migration baseline', 'JWT signing and verification utilities; user login planned for Phase 2']
+
+export default function FoundationPage() {
+  const [label, setLabel] = useState('Local workspace')
+  const { register, handleSubmit, formState: { errors } } = useForm({ resolver: zodResolver(schema), defaultValues: { label } })
+  return <><p className="text-xs font-semibold uppercase tracking-widest text-teal-600">Phase 1</p><h1 className="mt-2 text-3xl font-semibold">Platform foundation</h1><p className="mt-3 max-w-2xl text-sm leading-6 text-slate-500">A modular monolith prepared for trading, wholesale, retail, motorcycle spare parts, electrical meters, and manufacturing. Business workflows have not been implemented.</p><section className="mt-8 rounded-xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900"><h2 className="font-semibold">Available in this phase</h2><ul className="mt-5 space-y-4 text-sm text-slate-600 dark:text-slate-300">{capabilities.map(text => <li key={text} className="flex gap-3"><span className="text-teal-600">✓</span>{text}</li>)}</ul></section><section className="mt-6 max-w-xl rounded-xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900"><h2 className="font-semibold">Local workspace label</h2><p className="mt-2 text-xs leading-5 text-slate-500">A small form to verify frontend validation. This label stays in page memory and is not saved to the server.</p><p role="status" className="mt-4 text-sm">Current label: <strong>{label}</strong></p><form className="mt-4" onSubmit={handleSubmit(data => setLabel(data.label))}><label htmlFor="workspace-label" className="text-sm font-medium">Display label</label><input id="workspace-label" {...register('label')} aria-invalid={!!errors.label} aria-describedby={errors.label ? 'label-error' : undefined} className="mt-2 block w-full rounded-lg border border-slate-300 bg-transparent p-3 dark:border-slate-600" />{errors.label && <p id="label-error" role="alert" className="mt-2 text-xs text-rose-600">{errors.label.message}</p>}<button className="mt-4 rounded-lg bg-brand-600 px-4 py-2 text-sm text-white" type="submit">Apply locally</button></form></section></>
+}
