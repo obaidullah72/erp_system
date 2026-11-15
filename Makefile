@@ -8,7 +8,7 @@ help:
 install:
 	$(PYTHON) -m venv backend/venv
 	$(BACKEND_PYTHON) -m pip install -r backend/requirements-dev.txt
-	npm ci --prefix frontend
+	npm install --prefix frontend
 
 backend:
 	cd backend && venv/bin/python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
