@@ -1,9 +1,26 @@
-# Local deployment and production path
+# Startup and deployment
 
-Use root README commands. Compose builds a Python non-root API, PostgreSQL 17, a one-shot Alembic runner, and an Nginx unprivileged frontend. PostgreSQL must be healthy before migrations; migrations must finish before API startup; readiness must pass before frontend startup. Exposed ports bind to localhost. No workers, Redis, or Celery run.
+See the root README for complete native and Docker startup. Compose requires independent POSTGRES_PASSWORD and JWT_SECRET_KEY. `docker compose config --quiet` validates without printing interpolated secrets. `docker compose up --build -d` starts PostgreSQL → migration → API/frontend, and Redis → worker. No tables are created from API lifespan.
 
-`docker compose config --quiet` validates interpolation without printing secrets. Root `.env` is required. Container images exclude local environments and secrets using per-context `.dockerignore`. Nginx falls back to index.html for React routes and passes `/api/` directly to FastAPI; API 404 responses must never fall back to the SPA.
+The one-shot migration service must exit successfully before API/worker start. Bootstrap is explicit: `docker compose exec api python -m scripts.bootstrap_admin --business demo --name 'My Business' --email admin@example.com`. Password entry is interactive and never appears in command arguments. Existing installations refuse bootstrap. `docker compose ps`, API `/api/v1/health/live` and `/ready`, Redis PING, worker control ping and frontend HTTP checks expose coarse health. API readiness currently verifies database connectivity, not revision parity; deployment owns migration ordering.
 
-`docker compose -f compose.yaml -f compose.production.yaml up --build -d` enables stricter application settings and disables API docs. This override is only a starting point: terminate TLS at a managed ingress, remove developer port exposure as appropriate, use secrets injection, separate database roles, pin immutable image versions/digests and resolved dependencies, and establish monitoring, backups and rollback procedures before public use.
+Native services use `make backend`, `make frontend`, and optional `make worker`. Workers require REDIS_URL; no business task or beat schedule exists. Diagnostic task `erp.ping` is the sole registered application task. Exports/notifications/scheduled reports remain unimplemented scaffolds. Add durable outbox delivery before introducing external effects.
 
-Compose volumes preserve database data across `down`. Do not delete volumes to resolve credential mismatches. PostgreSQL init variables only apply to an empty data directory. Test migrations against restored backups. Phase 1 has no business data migration and no tested production rollout.
+Frontend uses a multi-stage Node 22 build and unprivileged Nginx. Python image uses the pinned runtime lock and an unprivileged user. Node installs with `npm ci`; Python 3.11 locks are committed. Containers bind host developer ports to loopback. PostgreSQL/Redis volumes persist across `down`. Restore/upgrade procedures must preserve journal and audit triggers.
+
+`docker compose -f compose.yaml -f compose.production.yaml up --build -d` enables production configuration for API/migration/worker. It is not a full production topology: provide TLS (required for Secure refresh cookies), trusted same-origin ingress, production CORS origins, a private broker, separate DDL/runtime roles, backup/restore validation, monitoring and ingress login throttling. Do not publish development ports directly. Image tags should be promoted to reviewed digests in deployment automation.
+
+## Dependency updates
+
+Runtime constraints: `backend/requirements.txt`; development constraints: `requirements-dev.txt`. Regenerate with Python 3.11 and pip-tools:
+
+```sh
+backend/venv/bin/pip-compile --output-file backend/requirements.lock backend/requirements.txt
+backend/venv/bin/pip-compile --constraint backend/requirements.lock --output-file backend/requirements-dev.lock backend/requirements-dev.txt
+npm install --package-lock-only --prefix frontend
+make install
+make test-local
+make lint build
+```
+
+Review dependency/lock diffs before deployment. The locks pin versions; they are not a claim of security certification. See Stage 1 record for exactly which runtime paths were verified in this workspace.

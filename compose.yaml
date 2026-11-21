@@ -2,6 +2,7 @@ name: tradecore
 
 x-api-environment: &api-environment
   ENVIRONMENT: development
+  REDIS_URL: redis://redis:6379/0
   DATABASE_URL: postgresql+psycopg://erp:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in root .env}@db:5432/erp
   JWT_SECRET_KEY: ${JWT_SECRET_KEY:?Set JWT_SECRET_KEY in root .env}
   CORS_ORIGINS: '["http://localhost:5173","http://127.0.0.1:5173","http://localhost:8080"]'
@@ -53,6 +54,36 @@ services:
       start_period: 10s
     restart: unless-stopped
 
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+  worker:
+    build: ./backend
+    image: tradecore-api:phase1
+    environment: *api-environment
+    command: ["celery", "-A", "app.workers.celery_app:celery_app", "worker", "--loglevel=WARNING", "--concurrency=2"]
+    depends_on:
+      redis:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "python", "-m", "app.workers.health"]
+      interval: 30s
+      timeout: 8s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped
+
   frontend:
     build: ./frontend
     ports:
@@ -60,7 +91,13 @@ services:
     depends_on:
       api:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:8080/"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
     restart: unless-stopped
 
 volumes:
   postgres_data:
+  redis_data:

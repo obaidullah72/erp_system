@@ -1,7 +1,7 @@
 # Backend foundation
 
-From the repository root, run `make install`, configure `backend/.env`, then `make migrate` and `make backend`. Settings load `backend/.env` regardless of working directory. Shell environment variables take precedence.
+Python 3.11, FastAPI, SQLAlchemy 2.0, PostgreSQL, Alembic, Argon2id/JWT, Celery/Redis. Use the root README for installation, bootstrap, startup and verification. Runtime and development lockfiles are committed; direct requirements files are inputs to intentional lock regeneration.
 
-`app.main:app` is an ASGI app wrapped globally for CORS and request logging. The FastAPI factory is `create_app()`. Routes live under `/api/v1`. Database sessions close automatically; repositories must not commit. Business services will own explicit transaction scopes in future phases.
+`app.main:app` wraps the FastAPI factory with global CORS and request logging. `/api/v1` includes auth, users, roles, business settings and health only. `get_db` owns the request transaction; function-scoped dependencies commit before response delivery. Services flush without committing. The posting kernel is internal; inventory is a Protocol, not implemented stock behavior. Foundation models are registered in `app/db/model_registry.py` and migration 0002. Future module migrations remain incremental.
 
-`requirements.txt` contains direct runtime constraints, including SQLAlchemy 2.0.x and Pydantic v2; `requirements-dev.txt` adds verification tools. These are bounded dependency manifests, not a fully resolved Python lockfile. Resolve and audit a lockfile before a production release.
+Tests never inherit the developer database URL. Set `ERP_TEST_DATABASE_URL` to a dedicated database ending in `_test` to enable real migration/auth/posting checks; each test creates and removes a random schema. `make test-local` from the root provisions its own temporary PostgreSQL cluster.

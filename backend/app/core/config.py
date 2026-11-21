@@ -2,7 +2,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Literal
 
-from pydantic import SecretStr, field_validator, model_validator
+from pydantic import Field, SecretStr, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy.engine import make_url
 
@@ -21,12 +21,23 @@ class Settings(BaseSettings):
     jwt_issuer: str = "erp-api"
     jwt_audience: str = "erp-web"
     access_token_minutes: int = 15
+    refresh_token_days: int = Field(default=7, ge=1, le=30)
+    redis_url: SecretStr = SecretStr("redis://localhost:6379/0")
 
     @field_validator("database_url")
     @classmethod
     def postgres_only(cls, value):
         if make_url(value.get_secret_value()).drivername != "postgresql+psycopg":
             raise ValueError("DATABASE_URL must use postgresql+psycopg")
+        return value
+
+    @field_validator("redis_url")
+    @classmethod
+    def redis_scheme(cls, value):
+        from urllib.parse import urlsplit
+        parsed = urlsplit(value.get_secret_value())
+        if parsed.scheme not in {"redis", "rediss"} or not parsed.hostname:
+            raise ValueError("REDIS_URL must be a redis:// or rediss:// URL")
         return value
 
     @field_validator("cors_origins")
@@ -50,7 +61,7 @@ class Settings(BaseSettings):
 
     @model_validator(mode="after")
     def production_secrets(self):
-        if self.jwt_secret_key and len(self.jwt_secret_key.get_secret_value()) < 32:
+        if self.jwt_secret_key and (len(self.jwt_secret_key.get_secret_value()) < 32 or "replace-with" in self.jwt_secret_key.get_secret_value()):
             raise ValueError("JWT_SECRET_KEY must contain at least 32 characters")
         if self.environment == "production":
             if not self.jwt_secret_key:

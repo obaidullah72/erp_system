@@ -67,3 +67,7 @@ Thumbs.db
 *.sln
 *.sw?
 *~
+
+# Browser verification artifacts
+frontend/test-results/
+frontend/playwright-report/

@@ -1,60 +1,73 @@
-# TradeCore ERP — Phase 1
+# TradeCore ERP — Stage 1 Foundation
 
-A local modular-monolith foundation for trading, wholesale, retail, motorcycle spare parts, electrical meters, and manufacturing. **No business module or login workflow is implemented yet.** Existing empty domain scaffolds remain inactive.
+Runnable React/Tailwind v4 + FastAPI/PostgreSQL modular monolith with login, live authorization, nine roles, business settings, foundation migrations, and an internal transactional journal kernel. Business transaction modules remain planned; the dashboard shows unavailable metrics honestly.
 
-## Prerequisites
+## Quick start with Docker Compose
 
-Node.js 22.12+ (Node 22 recommended), npm, Python 3.11+, and PostgreSQL 17 or Docker Compose v2. Docker must be running for container commands.
+Requires Docker Engine/Compose v2. Copy `.env.example` to `.env`. Replace both placeholder secrets independently using `python3 -c "import secrets; print(secrets.token_hex(32))"`; use URL-safe hex for POSTGRES_PASSWORD. Placeholders are not usable credentials.
 
-## Run everything with Docker
+```sh
+cp .env.example .env
+# Edit .env with generated secrets before continuing.
+docker compose config --quiet
+make up
+docker compose exec api python -m scripts.bootstrap_admin --business demo --name 'My Business' --email admin@example.com
+```
 
-1. Copy `.env.example` to `.env`.
-2. Replace both values with independent secrets. Use URL-safe hex for the database password; the Compose database URL interpolates it directly. Generate each with `python3 -c "import secrets; print(secrets.token_hex(32))"`.
-3. Run `docker compose config --quiet`, then `make up`.
-4. Open http://localhost:8080/system. API health is at http://localhost:8000/api/v1/health/live and `/api/v1/health/ready`; development API docs are at http://localhost:8000/docs.
+The bootstrap prompts for a password (12–256 characters) twice. It creates one business and its nine roles, then refuses all further bootstrap attempts. There is no default account or public registration endpoint. Sign in at **http://localhost:8080/login** with business code `demo` and your chosen credentials. API docs: http://localhost:8000/docs. The bootstrap must run after migrations complete.
 
-Compose waits for PostgreSQL, runs Alembic once through a migration service, then starts the API and frontend. `make down` preserves the database volume. Changing POSTGRES_PASSWORD does not change credentials inside an existing PostgreSQL volume; rotate them explicitly.
+Compose starts PostgreSQL, applies migrations in a one-shot service, starts the API and frontend, and starts Redis plus a Celery worker. All long-running services have health checks. `docker compose ps` shows status. `make down` preserves volumes. Changing `.env` database passwords does not rotate an existing PostgreSQL role's password.
 
 ## Native development
+
+Requires Python 3.11, Node 22.12+ (Node 22 recommended), npm, and PostgreSQL 16/17. Redis is needed only to run the worker; authentication and posting do not depend on Redis.
 
 ```sh
 cp backend/.env.example backend/.env
 cp frontend/.env.example frontend/.env
 make install
-```
-
-Edit `backend/.env` to use your real local database credentials and an independently generated JWT secret if testing JWT utilities. Start PostgreSQL and create the `erp` database and role, or configure root `.env` and use `docker compose up -d db`. Match its password in `backend/.env`. Native backend environment variables override the `.env` file. Root `.env` is for Compose; it is not automatically loaded by native FastAPI.
-
-```sh
+# Edit backend/.env: real DATABASE_URL and independently generated JWT_SECRET_KEY.
+# Create the configured PostgreSQL role/database, or use Compose's db service.
 make migrate
+cd backend
+venv/bin/python -m scripts.bootstrap_admin --business demo --name 'My Business' --email admin@example.com
+cd ..
 make backend
-# In another terminal:
+# Another terminal:
 make frontend
+# Optional, once Redis is available:
+make worker
 ```
 
-Open http://localhost:5173/system. Vite proxies `/api` to `127.0.0.1:8000`; container Nginx proxies it to `api:8000`. For a separately hosted API, configure frontend `VITE_API_URL` and the backend's explicit JSON `CORS_ORIGINS` list. Vite variables are public and are embedded at build time. Frontend Docker builds intentionally use the same-origin `/api/v1` default.
+Open **http://localhost:5173/login**. Vite proxies `/api` to port 8000; container Nginx proxies to `api:8000`. Native settings always load `backend/.env`; environment variables override it. Root `.env` is Compose-only. VITE settings are public; never put secrets there. Keep frontend/API same-origin through a proxy for refresh cookies.
 
-Without PostgreSQL, the backend starts and liveness returns 200; readiness returns 503. No tables are created during startup. `make migrate` creates only the Alembic revision table at this phase's empty baseline.
-
-The first `npm install` resolves the frontend dependencies and creates `frontend/package-lock.json`. Commit the resulting lockfile and use `npm ci` for repeatable CI builds. The stale starter lockfile was removed because it did not describe the required stack; dependency downloads were unavailable during implementation.
+`make install` uses `backend/requirements-dev.lock` and `frontend/package-lock.json`; Docker uses `backend/requirements.lock` and `npm ci`. Direct dependency manifests remain available for intentional upgrades. Python locks target Python 3.11; regenerate/test them when upgrading the interpreter.
 
 ## Verification
 
 ```sh
+make test                       # unit checks; PostgreSQL checks explicitly skip without test URL
+make lint
 make build
-make test
-make health
-cd backend && venv/bin/python -m alembic current
+make test-local                 # fresh temporary local PostgreSQL cluster; tests + browser checks
+# Or use an existing dedicated database whose name ends in _test:
+export ERP_TEST_DATABASE_URL='postgresql+psycopg://erp_test:password@127.0.0.1:5432/erp_test'
+make test-integration
+cd frontend && npx playwright install chromium && cd ..
+make test-e2e
+make health                     # running native API, port 8000
 ```
 
-The backend tests cover health success/failure, CORS, error redaction, request IDs, settings, and JWT verification. The optional real-database test runs only with `ERP_TEST_DATABASE_URL` set. Read [testing](docs/testing.md) for limits and the actual implementation-session results.
+`make test-local` requires PostgreSQL binaries (`initdb`, `pg_ctl`, `createdb`) and Chromium installed by Playwright. It owns its temporary cluster and shuts it down on exit; it does not use developer database settings. Each integration test gets a random schema, real Alembic upgrades, and teardown. Browser tests start isolated API/Vite servers on 8001/5174, use test-only credentials and drop their random schema on shutdown. See [verification and limitations](docs/testing.md).
+
+## What is implemented
+
+- Argon2id passwords; 15-minute access JWTs; seven-day absolute sessions by default; rotating HttpOnly refresh cookies, replay revocation, logout, current-user lookup, active-user checks.
+- Super Admin, Admin, Accountant, Sales Manager, Purchase Manager, Inventory Manager, Production Manager, Cashier, Viewer. Explicit module/action grants. Super Admin-only protected controls, configurable responsibility roles, read-only Viewer.
+- Authorized user, role and business-settings APIs with tenant boundaries and optimistic versions; request IDs, safe error envelopes, structured request logs and exact CORS origins.
+- Fifteen foundation tables plus Alembic versioning. Journal balance/immutability triggers, source uniqueness, account mapping checks, idempotency and rollback. Period-policy and inventory interfaces are explicit extension points.
+- Connected login, protected shell, responsive navigation, persistent theme, shared controls, live health page. No fabricated sales or stock figures.
 
 ## Documentation
 
-- [Architecture and transaction boundaries](docs/architecture.md)
-- [Directory purposes](docs/folder-structure.md)
-- [Database blueprint](docs/database-design.md)
-- [Nine-phase roadmap](docs/development-roadmap.md)
-- [Security](docs/security.md), [deployment](docs/deployment.md), [API](docs/api.md)
-
-Redis and Celery are not required for Phase 1. Future asynchronous workloads must justify their addition. This foundation is not a production-ready ERP release.
+[Architecture](docs/architecture.md) · [Layer map](docs/folder-structure.md) · [Full domain design](docs/domain-model.md) · [Database/migrations](docs/database-design.md) · [API baseline](docs/api.md) · [Security and roles](docs/security.md) · [Deployment](docs/deployment.md) · [Traceability](docs/traceability.md) · [Stage 1 record](docs/phases/phase-01-foundation.md)

@@ -3,7 +3,7 @@ from app.core.config import get_settings
 from app.db.base import Base
 from app.db.session import engine
 
-# Import concrete model modules here in Phase 2 and beyond before autogeneration.
+import app.db.model_registry  # noqa: F401 — register only concrete foundation models
 target_metadata = Base.metadata
 
 if context.is_offline_mode():
@@ -12,8 +12,14 @@ if context.is_offline_mode():
     with context.begin_transaction():
         context.run_migrations()
 else:
-    with engine.connect() as connection:
+    def migrate(connection):
         context.configure(connection=connection, target_metadata=target_metadata, compare_type=True)
         with context.begin_transaction():
             context.run_migrations()
-    engine.dispose()
+    supplied = context.config.attributes.get('connection')
+    if supplied is not None:
+        migrate(supplied)
+    else:
+        with engine.connect() as connection:
+            migrate(connection)
+        engine.dispose()

@@ -7,6 +7,7 @@ from app.core.exceptions import register_exception_handlers
 from app.core.logging import configure_logging
 from app.core.middleware import RequestLoggingMiddleware
 from app.db.session import engine
+from app.shared.schemas import ErrorEnvelope
 
 settings = get_settings()
 configure_logging(settings.log_level)
@@ -20,6 +21,7 @@ async def lifespan(app: FastAPI):
 
 def create_app() -> FastAPI:
     application = FastAPI(title=settings.app_name, version="0.1.0", lifespan=lifespan,
+                          responses={status: {"model": ErrorEnvelope} for status in (400, 401, 403, 404, 409, 422, 500)},
                           docs_url=None if settings.environment == "production" else "/docs",
                           redoc_url=None, openapi_url=None if settings.environment == "production" else "/openapi.json")
     register_exception_handlers(application)
@@ -29,7 +31,7 @@ def create_app() -> FastAPI:
 
 # Wrap globally so even unhandled error responses receive CORS and request IDs.
 app = RequestLoggingMiddleware(CORSMiddleware(
-    create_app(), allow_origins=settings.cors_origins, allow_credentials=False,
+    create_app(), allow_origins=settings.cors_origins, allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allow_headers=["Authorization", "Content-Type"], expose_headers=["X-Request-ID"],
+    allow_headers=["Authorization", "Content-Type", "X-ERP-CSRF", "Idempotency-Key"], expose_headers=["X-Request-ID"],
 ))

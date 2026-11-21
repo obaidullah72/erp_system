@@ -14,7 +14,7 @@ def liveness(response: Response):
 
 
 @router.get("/ready", response_model=HealthResponse, responses={503: {"model": HealthResponse}})
-def readiness(response: Response, session: Session = Depends(get_db)):
+def readiness(response: Response, session: Session = Depends(get_db, scope='function')):
     ready = database_is_ready(session)
     response.status_code = 200 if ready else 503
     response.headers["Cache-Control"] = "no-store"

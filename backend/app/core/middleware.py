@@ -30,6 +30,6 @@ class RequestLoggingMiddleware:
         finally:
             logger.info("HTTP request", extra={
                 "request_id": request_id, "method": scope["method"],
-                "path": scope["path"], "status": status,
+                "path": getattr(scope.get("route"), "path", "[unmatched]"), "status": status,
                 "duration_ms": round((time.perf_counter() - started) * 1000, 2),
             })

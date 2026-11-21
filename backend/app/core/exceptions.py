@@ -16,6 +16,17 @@ def error_response(request, status, code, message, details=None, headers=None):
 
 
 def register_exception_handlers(app: FastAPI):
+    from app.shared.errors import BusinessError
+    from sqlalchemy.exc import IntegrityError
+
+    @app.exception_handler(BusinessError)
+    async def business_error(request: Request, exc: BusinessError):
+        return error_response(request, exc.status, exc.code, exc.message)
+
+    @app.exception_handler(IntegrityError)
+    async def integrity_error(request: Request, exc: IntegrityError):
+        return error_response(request, 409, "constraint_conflict", "The change conflicts with an existing record or constraint")
+
     @app.exception_handler(HTTPException)
     async def http_error(request: Request, exc: HTTPException):
         return error_response(request, exc.status_code, "http_error", str(exc.detail), headers=exc.headers)

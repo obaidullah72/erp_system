@@ -1,6 +1,6 @@
 const phases = [
   ['Foundation', 'Application shell, API, database connectivity, migrations, and containers.'],
-  ['Database & authentication', 'Users, roles, permissions, secure login, and audit identity.'],
+  ['Master-data preparation', 'Foundation identity is implemented. Extend master data and organization settings next.'],
   ['Master data', 'Products, categories, brands, units, warehouses, and business partners.'],
   ['Inventory', 'Stock movements, reservations, transfers, returns, adjustments, and valuation.'],
   ['Purchasing, sales & POS', 'Receipts, invoices, payment capture, and posting integration.'],

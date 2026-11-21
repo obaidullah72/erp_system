@@ -1,43 +1,35 @@
-# Architecture
+# Architecture and major layers
 
-## Scope and runtime
+TradeCore is a modular monolith: one FastAPI API, one PostgreSQL database, one React SPA and one Celery worker process sharing application code. Redis is the worker broker, not a source of financial truth. Nginx serves the production SPA and proxies `/api`; Vite provides the same contract during development. Tailwind v4 is integrated through `@tailwindcss/vite` and the CSS import/custom dark variant.
 
-Phase 1 is an operational foundation, not a business ERP release. The only API resources are liveness and database readiness. React routes provide system status, foundation information, a memory-only validation form, and a roadmap. Login, CRUD, postings, and reports are not implemented.
+| Layer | Responsibility | Entry points |
+|---|---|---|
+| Browser presentation | Layout, accessible controls, forms, truthful availability states | frontend/src/layouts, components, pages |
+| Browser application | Router, protected routes, session state and permission affordances | frontend/src/app, auth |
+| Transport client | Same-origin Axios, in-memory bearer token, cookie refresh coalescing, safe error mapping | frontend/src/lib/axios.js |
+| HTTP adapters | Typed schemas, dependencies, pagination and response DTOs | backend/app/auth/routes.py, modules/{users,roles,settings}/routes.py |
+| Policies | Live tenant/session identity, explicit grants, protected-role and last-admin checks | auth/dependencies.py, core/permissions.py, module services |
+| Application services | Orchestrate business changes, audit, validation; never commit internally | auth/service.py, module service.py, accounting/posting.py |
+| Persistence | SQLAlchemy queries and foundation models; named keys, tenant references, decimal types | auth/repository.py, db/model_registry.py, db/session.py |
+| Database invariants | Versioned DDL; tenant FKs, uniqueness, deferred journal balance and immutable history | migrations/versions/0002_foundation_tables.py |
+| Platform | Validated settings, request IDs, JSON logs, redacted errors, explicit CORS | core/, main.py |
+| Asynchronous runtime | Redis/Celery with diagnostic ping and worker health probe | workers/celery_app.py, workers/health.py |
+| Verification | Real migrations in isolated schemas, transactional tests, browser lifecycle checks | backend/tests, frontend/tests/e2e |
 
-The modular monolith has one FastAPI deployment, one PostgreSQL database, and one React application. Vite serves development assets and proxies `/api` to FastAPI. Container Nginx serves the compiled SPA and proxies `/api` to the API. PostgreSQL is the source of truth. No Redis, Celery, or distributed transactions are needed in Phase 1.
+Foundation models are deliberately registered together in `db/model_registry.py` because they share tenant/security/ledger constraints. Empty historical module files are dormant placeholders. Future concrete domain models should live in their owning module and register with Alembic explicitly. Small administration services currently issue SQLAlchemy queries directly; extract repositories when query reuse justifies them. HTTP code does not perform journal posting.
 
-## Boundaries
+## Request and transaction lifecycle
 
-Each future domain owns `routes.py` (HTTP and dependencies), `schemas.py` (Pydantic request/response contracts), `models.py` (SQLAlchemy persistence), `repository.py` (queries and writes), and `service.py` (business orchestration). Routes call services; services use repositories; repositories use request-scoped sessions. Routes never perform business posting, repositories never commit, and models never depend on HTTP. Shared code holds genuinely shared primitives rather than domain rules.
+A generated request ID wraps CORS and exception handling. Pydantic validates requests without echoing submitted values in errors. Authentication verifies HS256 issuer, audience and expiry, then resolves a live unrevoked session and active user/business. Permissions are fetched from current memberships and role grants; tenant identity comes from the user, not a submitted business ID.
 
-Auth dependencies verify identity; permission decisions belong in explicit policies. Core contains settings, logging, middleware, security, and safe exceptions. Database configuration owns engine, sessions, and the common declarative base. Health follows the same route/schema/service/repository separation without inventing business tables.
+`get_db` owns a single transaction and closes the session. Every writing dependency uses FastAPI `scope='function'` so commit finishes before the success response is sent. Service code flushes only. Exceptions roll back the complete command. CLI bootstrap and future worker commands explicitly own `SessionLocal.begin()`. Never mix manual commits into the request transaction.
 
-Existing empty module files predate this implementation and remain dormant. New modules should be created only when their phase implements them. Cross-domain writes go through an orchestrating service, never a call to another module's HTTP API.
+The internal posting kernel accepts a validated immutable event and same-business account mappings. It serializes Stage 1 postings per business using the settings lock, checks replay first, validates period/account/currency policy, and writes journal, audit and idempotency result inside a savepoint. Source uniqueness is enforced in PostgreSQL. Savepoint rollback removes partial kernel writes; the outer transaction can still roll back all composed source changes. The per-business lock is intentionally conservative and can be narrowed when actual operational volume warrants it.
 
-## Transaction boundaries (design contract for later phases)
+Journal rows are immutable. Deferred constraints reject a commit containing no lines, fewer than two lines, or unequal totals. Lines cannot be appended to entries from a prior transaction. Reversal workflows, chart administration, fiscal periods, tax, FX and stock valuation are later modules. `OpenPeriodPolicy` is an explicit Stage 1 policy; the inventory module exposes only a Protocol.
 
-One business command owns one outer `with session.begin()` transaction. Request dependencies provide and close sessions; services explicitly begin and commit. Repositories may flush but cannot commit. Exceptions roll back the whole command; response construction happens after successful commit. Never reuse an implicit read transaction and then begin a nested business transaction by accident.
+## Runtime limits
 
-Receiving goods eventually atomically writes receipt status, stock movements, valuation, payable journal, audit event, and idempotency result. Posting a sale atomically writes invoice state, stock issue, COGS, receivable/revenue/tax journal, and audit event. A warehouse transfer writes both stock legs atomically; in-transit ownership is explicit for delayed transfers. Production completion atomically records material consumption, yield/scrap, finished stock, batch genealogy, valuation, and WIP release.
+No business jobs are scheduled. Exports/email/report tasks are placeholders and are not registered. Add an outbox and consumer deduplication in the same migration as the first asynchronous business effect. Never send external requests inside a financial transaction. Readiness checks connectivity, while Compose's successful migration dependency ensures schema startup order. A separately deployed API must apply migrations first; readiness alone is not a schema audit.
 
-Phase 5 may create draft orders and invoices before Phase 6 accounting exists. Financial posting must remain disabled until the accounting posting engine is available; never partially post inventory or expose a successful financial posting in the meantime.
-
-Use unique document/idempotency constraints and row locks on stock balance/valuation rows. Lock rows in stable product/location order to avoid deadlocks. Retry an entire command for recognized transient deadlocks/serialization failures only, with bounded retries and the same idempotency key. Prevent overselling under concurrency; SQL alone must enforce critical uniqueness and referential integrity. Add an outbox in the same transaction when actual asynchronous side effects arrive. External email and webhooks must not run inside a database transaction.
-
-## Money, quantity, and valuation
-
-Use Python `Decimal`, PostgreSQL `NUMERIC`, and decimal strings over JSON. Never derive money from binary float; parse decimal input strings and reject nonfinite values. Proposed money/unit costs use NUMERIC(20,6), quantities NUMERIC(20,6), exchange rates NUMERIC(20,10). Round at documented document/tax boundaries using the currency's minor units and an explicitly chosen rounding policy (initial proposal: ROUND_HALF_UP, subject to jurisdiction review). Store original currency and exchange rate with immutable base-currency postings. JavaScript must not calculate posted balances with Number; server results are authoritative.
-
-The initial proposed valuation is perpetual moving weighted average per product and warehouse, with cost carried across transfers. Reservations change available quantity, not on-hand or valuation. Backdated stock movements into closed periods and negative physical stock are initially disallowed. Returns link original movement and cost; approved adjustments require reasons and paired accounting. FIFO needs explicit cost layers if selected later; do not mix valuation policies silently. See database blueprint and inventory rules.
-
-## Financial immutability and traceability
-
-Posted journal headers/lines and posted stock movements are append-only. Corrections use linked reversals and replacement documents, never edits/deletes to posted rows. Only drafts may change. Financial periods can be locked; postings must balance in base currency before commit. Enforce posting restrictions in both services and database protections in the accounting phase.
-
-Batch lineage links supplier lots, receipts, material issues, work orders, production batches, finished lots, quality decisions, shipments, and returns. Serial-tracked electrical meters and applicable spare parts get unique serial identities separate from lots. Quarantined stock is not saleable. Preserve source-document references and actor/time context. Cost adjustments must retain the original traceable posting and add adjustment entries.
-
-## Operations and limitations
-
-Liveness does not connect to PostgreSQL. Readiness performs `SELECT 1`, returns 503 on connection/query failure, and does not assert schema revision or business readiness. Compose applies Alembic explicitly before API startup. No automatic `create_all` or auto-migration in application lifespan. The baseline creates no business tables.
-
-Logs are JSON and contain request ID, method, path (without query), status, and elapsed milliseconds. Exceptions return safe envelopes, omit validation input values, and include a generated request ID. Credentials, authorization headers, and database errors are not returned to clients. CORS uses explicit origins, and the global wrapper includes error responses. Themes are browser-local, status history is memory-only, and readiness is public with no server details.
+Request logs use route templates, not URL parameters/query strings, and do not log bodies, credentials or authorization headers. Health exposes only coarse status. See [security](security.md), [domain design](domain-model.md), and [API contracts](api.md) for exact guarantees and future boundaries.
