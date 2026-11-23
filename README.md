@@ -70,4 +70,6 @@ make health                     # running native API, port 8000
 
 ## Documentation
 
+Authoritative requirements: [complete source pack](docs/erp-source/00_README.md), [source reconciliation and overrides](docs/source-reconciliation.md), [full requirements traceability](docs/requirements-traceability.md), [screen/action inventory](docs/stage-2-screen-action-inventory.md), and [40-report verification baseline](docs/report-verification.md). Run `make verify-sources` to check source hashes, report coverage, exact role names and generated mapping consistency. This check does not certify business behavior.
+
 [Architecture](docs/architecture.md) · [Layer map](docs/folder-structure.md) · [Full domain design](docs/domain-model.md) · [Database/migrations](docs/database-design.md) · [API baseline](docs/api.md) · [Security and roles](docs/security.md) · [Deployment](docs/deployment.md) · [Traceability](docs/traceability.md) · [Stage 1 record](docs/phases/phase-01-foundation.md)

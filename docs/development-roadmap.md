@@ -1,17 +1,22 @@
-# Incremental ERP roadmap
+# ERP source phases and delivery checkpoints
 
-The expanded Stage 1 supersedes the original narrow Phase 1 scope: identity, foundation tables and the minimal posting kernel are now included. This does not imply the later business modules are complete.
+Use the populated [source pack](erp-source/00_README.md) and [requirements traceability](requirements-traceability.md). The earlier nine-phase roadmap and empty placeholders are superseded as requirement sources. Preserve prior Stage 1 completion evidence separately.
 
-| Stage | Scope / remaining work | Acceptance gate |
+## Source dependency order
+
+| Source phase | Required scope | Acceptance gate |
 |---|---|---|
-| 1 Foundation | Connected login/shell, live RBAC, tenant configuration, foundation migrations, journal kernel, full domain/API baseline, runtime and verification | Clean install/start, authorization, migration, journal invariants, browser checks |
-| 2 Identity extensions | Password reset/MFA/rate limiting, organization membership extensions as required; core identity already implemented | Abuse, recovery and policy tests |
-| 3 Master data | Products/categories/brands/units, warehouses, partner roles, employees, fitments and lot/serial policy | Tenant CRUD, versions, uniqueness, audit |
-| 4 Inventory | Movements, balances, reservations, transfers, valuation, lot/serial tracking | Concurrent overselling prevention, cost reconciliation, rounding |
-| 5 Purchasing/sales/POS | Orders, receipts, invoices, tenders, tax/pricing rules and stock/ledger orchestration | Atomic source+stock+journal; source uniqueness and retries |
-| 6 Accounting extensions | Chart management, periods, reversals, FX, bank/allocations/reconciliation and statements | Period locks, reversal invariants, financial reconciliation |
-| 7 Manufacturing | BOM, schedules, WIP, consumption/completion, genealogy, quality, scrap/rework and costing | Traceability, yield/cost reconciliation and atomic posting |
-| 8 Reporting | Actual dashboards, reports, authorized exports | Totals reconcile; missing metrics explicit; performance |
-| 9 Hardening | Security/load/restore review, release automation and production operations | Restore drill, monitoring, key rotation and rollback rehearsal |
+| 1 Foundation | Platform, identity, nine confirmed roles, configuration, journal kernel | Auth, migrations, permissions, balanced/idempotent posting and connected shell |
+| 2 Master Data | Products, units/conversions, classifications, warehouses, shared parties and opening drafts | Validated persisted masters, tenant boundaries, uniqueness, archival and image controls |
+| 3 Inventory | Immutable movements, balances, reservations, batches, FIFO/FEFO allocation, valuation, transfers, counts and alerts | No overselling, atomic rollback, historical costs and stock/GL reconciliation |
+| 4 Purchases and Sales | Orders, partial receipts, matching, invoices, POS, settlements and returns | Atomic source/stock/journal effects; cash and credit remain distinct |
+| 5 Accounting | Account mappings, periods, GL, AR/AP, statements, expenses, cash/bank and reconciliation | Financial equations, historical aging, protected postings and period controls |
+| 6 Manufacturing | BOM versions, schedules, orders, batch consumption/output, costs, quality and genealogy | Raw/WIP/finished/loss reconciliation, quality gates and idempotent completion |
+| 7 Reports and Analytics | Dashboard and exact 40 reports, drill-downs, filters, PDF/Excel jobs | Independent totals, snapshot history, authorized complete exports and measured queries |
+| 8 Testing and Optimization | Full reference scenario, failure/concurrency, security, performance and recovery | Actual critical-test evidence, restore drill, startup/upgrade and operational readiness |
 
-Redis/Celery is configured in Stage 1 but only diagnostic ping exists. Add an outbox and retry-safe consumers when real asynchronous jobs arrive. Existing empty files and module grants are scaffolding, not feature implementations. Financial source posting stays unavailable until each complete source workflow and all dependencies are implemented, even though the internal kernel is ready.
+The source phases are dependencies, not permission prompts. The user's delivery Stages 2–5 are separate checkpoints: complete frontend, complete backend in dependency order, connect every workflow, then comprehensive verification/readiness. Continue authorized work through the checkpoints; do not infer business completion from UI scaffolds.
+
+## Current boundaries
+
+The existing Stage 1 record covers foundation behavior. Operational services and report calculations are not implemented; their UI workspaces expose honest unavailable states. Redis/Celery currently provides only a diagnostic task. No business export/reminder/alert delivery is verified. Add after-commit scheduling and deduplication with real services. Exact source coverage is now indexed; this does not change any pending business acceptance result.

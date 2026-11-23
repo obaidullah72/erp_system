@@ -1,0 +1,110 @@
+{
+  "archive": "Business_ERP_All_Phases.zip",
+  "archive_sha256": "f9efbd80bbc8108fe2fc8f683d4f93ddbf691d4a07cc69ffba8ac417bf485168",
+  "verified_on": "2026-11-24",
+  "method": "Every extracted Markdown file compared byte-for-byte with its archive member. No source text rewritten.",
+  "files": [
+    {
+      "path": "docs/erp-source/00_Original_Requirements.md",
+      "archive_member": "Business_ERP_Phases/00_Original_Requirements.md",
+      "bytes": 21048,
+      "sha256": "4eed0284590fe4ed368f66b8f1182be8174f39604c5ce94a8fc69232bae56f7c",
+      "authority": "required"
+    },
+    {
+      "path": "docs/erp-source/00_Project_Standards.md",
+      "archive_member": "Business_ERP_Phases/00_Project_Standards.md",
+      "bytes": 8244,
+      "sha256": "cfc15f93f122a2e38584b714cf87bc7b6f0188c7a038059a5f331b41f80223aa",
+      "authority": "required"
+    },
+    {
+      "path": "docs/erp-source/00_README.md",
+      "archive_member": "Business_ERP_Phases/00_README.md",
+      "bytes": 4008,
+      "sha256": "558c3d9feb844a4c48a5f3c9d9a45cbbd13ccee42d056e919f63c5b49d0d893f",
+      "authority": "supporting"
+    },
+    {
+      "path": "docs/erp-source/01_Phase_1_Foundation.md",
+      "archive_member": "Business_ERP_Phases/01_Phase_1_Foundation.md",
+      "bytes": 5515,
+      "sha256": "e1db695684b5c464028215a210eeeeada860309c00904eb7ff84019482c8c2f7",
+      "authority": "required"
+    },
+    {
+      "path": "docs/erp-source/02_Phase_2_Master_Data.md",
+      "archive_member": "Business_ERP_Phases/02_Phase_2_Master_Data.md",
+      "bytes": 5584,
+      "sha256": "8fbdfdeca25660f1701f94cb069dd629ce79ada36791e05cc9cb05de738bec98",
+      "authority": "required"
+    },
+    {
+      "path": "docs/erp-source/03_Phase_3_Inventory.md",
+      "archive_member": "Business_ERP_Phases/03_Phase_3_Inventory.md",
+      "bytes": 5442,
+      "sha256": "4e96534c4df7def92192061d648e483c9cb55b898b198593e3341f4f42d2311f",
+      "authority": "required"
+    },
+    {
+      "path": "docs/erp-source/04_Phase_4_Purchases_and_Sales.md",
+      "archive_member": "Business_ERP_Phases/04_Phase_4_Purchases_and_Sales.md",
+      "bytes": 6147,
+      "sha256": "ed5503df1b6970efe01178b2405ecffa6a2b78c3f3bf833181c1169445ec54dd",
+      "authority": "required"
+    },
+    {
+      "path": "docs/erp-source/05_Phase_5_Accounting.md",
+      "archive_member": "Business_ERP_Phases/05_Phase_5_Accounting.md",
+      "bytes": 6179,
+      "sha256": "9e6e5b4d4a6286b58051952a456f2f1f6cdf8b785d3ef9c595d87f34a8b2170a",
+      "authority": "required"
+    },
+    {
+      "path": "docs/erp-source/06_Phase_6_Manufacturing.md",
+      "archive_member": "Business_ERP_Phases/06_Phase_6_Manufacturing.md",
+      "bytes": 6069,
+      "sha256": "53541a0f5686504970d7985eb1e792f921adbb240a6630f2b246e3eb174698d0",
+      "authority": "required"
+    },
+    {
+      "path": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md",
+      "archive_member": "Business_ERP_Phases/07_Phase_7_Reports_and_Analytics.md",
+      "bytes": 5362,
+      "sha256": "ceb403b7eeff0f8bbc1f85cb7db7797b99476d284afb4e220b9e632481f5323d",
+      "authority": "required"
+    },
+    {
+      "path": "docs/erp-source/08_Phase_8_Testing_and_Optimization.md",
+      "archive_member": "Business_ERP_Phases/08_Phase_8_Testing_and_Optimization.md",
+      "bytes": 5851,
+      "sha256": "3cbf7bb5ed417354242f4d8d941c4eec18c4c8569321a9c011abdafaf7e9cd69",
+      "authority": "required"
+    },
+    {
+      "path": "docs/erp-source/Business_ERP_All_Phases.md",
+      "archive_member": "Business_ERP_Phases/Business_ERP_All_Phases.md",
+      "bytes": 54996,
+      "sha256": "5bea26351a35524ad9ea50fff0cb033725435eb562c725139db77998bb6506ad",
+      "authority": "supporting"
+    }
+  ],
+  "overrides": [
+    {
+      "id": "OVR-ROLES-01",
+      "authority": "User-confirmed role list",
+      "roles": [
+        "Super Admin",
+        "Admin",
+        "Accountant",
+        "Sales Manager",
+        "Purchase Manager",
+        "Inventory Manager",
+        "Production Manager",
+        "Cashier",
+        "Viewer"
+      ],
+      "policy": "Super Admin has full access including user/role management; Admin excludes restricted Super Admin controls; Viewer is read-only; responsibility grants are configurable. Supersedes older suggested names, including their use in acceptance checks."
+    }
+  ]
+}

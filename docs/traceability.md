@@ -1,5 +1,7 @@
 # Stage 1 requirement traceability
 
+This is the retained Stage 1 evidence map. The current full-source baseline is [ERP requirements traceability](requirements-traceability.md), reconciled against `docs/erp-source/` and the user-confirmed role override. Source phase numbers differ from the legacy nine-phase roadmap.
+
 The Stage 1 completion record contains observed verification results. File paths below are relative to repository root. Planned domain contracts are not claims of implemented modules.
 
 | Request | Implementation / deliverable | Verification |

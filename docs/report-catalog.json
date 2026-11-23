@@ -1,0 +1,2213 @@
+{
+  "status": "planned_contracts_not_implemented",
+  "reports": [
+    {
+      "id": "R01.01",
+      "name": "Current stock",
+      "source_name": "Current stock report",
+      "family": "Inventory",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 591
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/current-stock",
+      "planned_api": "/api/v1/reports/inventory/current-stock",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "product_id",
+        "category_id",
+        "warehouse_id",
+        "as_of",
+        "batch_id"
+      ],
+      "columns": [
+        "product",
+        "category",
+        "warehouse",
+        "batch",
+        "unit",
+        "on_hand",
+        "reserved",
+        "available"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "inventory",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.01.totals",
+        "R01.01.filters",
+        "R01.01.permissions",
+        "R01.01.drilldowns",
+        "R01.01.history",
+        "R01.01.exports"
+      ],
+      "formula": "Sum signed posted base quantities by product/unit/location through cutoff; show reserved and eligible available separately.",
+      "reference_fixture": "INV",
+      "reference_expected": "Bolt 109 ea; Warehouse A 104, B 5; never sum ea and kg.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.02",
+      "name": "Stock movement",
+      "source_name": "Stock movement report",
+      "family": "Inventory",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 592
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/stock-movement",
+      "planned_api": "/api/v1/reports/inventory/stock-movement",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "product_id",
+        "category_id",
+        "warehouse_id",
+        "as_of",
+        "batch_id"
+      ],
+      "columns": [
+        "date",
+        "product",
+        "warehouse",
+        "batch",
+        "unit",
+        "quantity",
+        "source_reference",
+        "movement_type"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "inventory",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.02.totals",
+        "R01.02.filters",
+        "R01.02.permissions",
+        "R01.02.drilldowns",
+        "R01.02.history",
+        "R01.02.exports"
+      ],
+      "formula": "List immutable movement lines, opening + signed movements = closing; internal transfer signs cancel business-wide.",
+      "reference_fixture": "INV",
+      "reference_expected": "Opening 100 + receipt 20 - sale 10 + return 2 - damage 3 = 109 ea; transfer -5/+5 nets zero.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.03",
+      "name": "Stock valuation",
+      "source_name": "Stock valuation",
+      "family": "Inventory",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 593
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/stock-valuation",
+      "planned_api": "/api/v1/reports/inventory/stock-valuation",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "product_id",
+        "category_id",
+        "warehouse_id",
+        "as_of",
+        "batch_id"
+      ],
+      "columns": [
+        "valuation_date",
+        "product",
+        "warehouse",
+        "batch",
+        "unit",
+        "quantity",
+        "currency",
+        "recorded_unit_cost",
+        "carrying_value"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "inventory",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.03.totals",
+        "R01.03.filters",
+        "R01.03.permissions",
+        "R01.03.drilldowns",
+        "R01.03.history",
+        "R01.03.exports"
+      ],
+      "formula": "Sum historical remaining costs at cutoff; do not multiply by current master price.",
+      "reference_fixture": "INV",
+      "reference_expected": "109 ea at recorded 10.00 = 1090.00; changing reference price to 99.00 has no effect.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.04",
+      "name": "Low-stock",
+      "source_name": "Low-stock report",
+      "family": "Inventory",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 594
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/low-stock",
+      "planned_api": "/api/v1/reports/inventory/low-stock",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "product_id",
+        "category_id",
+        "warehouse_id",
+        "as_of",
+        "batch_id"
+      ],
+      "columns": [
+        "product",
+        "warehouse",
+        "unit",
+        "available",
+        "reorder_level"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "inventory",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.04.totals",
+        "R01.04.filters",
+        "R01.04.permissions",
+        "R01.04.drilldowns",
+        "R01.04.history",
+        "R01.04.exports"
+      ],
+      "formula": "Compare eligible available quantity with configured threshold in the same product base unit.",
+      "reference_fixture": "INV",
+      "reference_expected": "Bolt available 109 < threshold 150 is included; a product above threshold is excluded.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.05",
+      "name": "Out-of-stock",
+      "source_name": "Out-of-stock report",
+      "family": "Inventory",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 595
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/out-of-stock",
+      "planned_api": "/api/v1/reports/inventory/out-of-stock",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "product_id",
+        "category_id",
+        "warehouse_id",
+        "as_of",
+        "batch_id"
+      ],
+      "columns": [
+        "product",
+        "warehouse",
+        "unit",
+        "on_hand",
+        "reserved",
+        "available"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "inventory",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.05.totals",
+        "R01.05.filters",
+        "R01.05.permissions",
+        "R01.05.drilldowns",
+        "R01.05.history",
+        "R01.05.exports"
+      ],
+      "formula": "Select active stock products with eligible available quantity <= 0; distinguish zero on-hand from reserved/unusable stock.",
+      "reference_fixture": "INV",
+      "reference_expected": "Zero product has 0 available and is included; Bolt is excluded.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.06",
+      "name": "Batch-wise stock",
+      "source_name": "Batch-wise stock",
+      "family": "Inventory",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 596
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/batch-wise-stock",
+      "planned_api": "/api/v1/reports/inventory/batch-wise-stock",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "product_id",
+        "category_id",
+        "warehouse_id",
+        "as_of",
+        "batch_id"
+      ],
+      "columns": [
+        "product",
+        "category",
+        "warehouse",
+        "batch",
+        "unit",
+        "on_hand",
+        "reserved",
+        "available"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "inventory",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.06.totals",
+        "R01.06.filters",
+        "R01.06.permissions",
+        "R01.06.drilldowns",
+        "R01.06.history",
+        "R01.06.exports"
+      ],
+      "formula": "Aggregate dated movements per batch/product/location with eligibility and expiry.",
+      "reference_fixture": "INV",
+      "reference_expected": "Opening batch 89 ea, receipt batch 20 ea; total 109; transfers preserve batch identity.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.07",
+      "name": "Warehouse-wise stock",
+      "source_name": "Warehouse-wise stock",
+      "family": "Inventory",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 597
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/warehouse-wise-stock",
+      "planned_api": "/api/v1/reports/inventory/warehouse-wise-stock",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "product_id",
+        "category_id",
+        "warehouse_id",
+        "as_of",
+        "batch_id"
+      ],
+      "columns": [
+        "product",
+        "category",
+        "warehouse",
+        "batch",
+        "unit",
+        "on_hand",
+        "reserved",
+        "available"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "inventory",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.07.totals",
+        "R01.07.filters",
+        "R01.07.permissions",
+        "R01.07.drilldowns",
+        "R01.07.history",
+        "R01.07.exports"
+      ],
+      "formula": "Aggregate movements per warehouse/product/base unit; reconcile location totals to business total.",
+      "reference_fixture": "INV",
+      "reference_expected": "A 104 ea + B 5 ea = 109 ea; values 1040.00 + 50.00 = 1090.00.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.08",
+      "name": "Damaged stock",
+      "source_name": "Damaged stock report",
+      "family": "Inventory",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 598
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/damaged-stock",
+      "planned_api": "/api/v1/reports/inventory/damaged-stock",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "product_id",
+        "category_id",
+        "warehouse_id",
+        "as_of",
+        "batch_id"
+      ],
+      "columns": [
+        "date",
+        "product",
+        "warehouse",
+        "batch",
+        "unit",
+        "damaged_quantity",
+        "currency",
+        "recorded_cost",
+        "source_reference"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "inventory",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.08.totals",
+        "R01.08.filters",
+        "R01.08.permissions",
+        "R01.08.drilldowns",
+        "R01.08.history",
+        "R01.08.exports"
+      ],
+      "formula": "Show damage events and disposition by batch/location; distinguish written-off quantities from quarantined holdings.",
+      "reference_fixture": "INV",
+      "reference_expected": "Written-off damage 3 ea / 30.00, source-linked; not counted as sellable stock.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.09",
+      "name": "Daily sales",
+      "source_name": "Daily sales",
+      "family": "Sales",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 601
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/daily-sales",
+      "planned_api": "/api/v1/reports/sales/daily-sales",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "product_id",
+        "category_id",
+        "warehouse_id",
+        "customer_id"
+      ],
+      "columns": [
+        "period",
+        "invoice",
+        "customer",
+        "product",
+        "unit",
+        "quantity",
+        "currency",
+        "invoice_total",
+        "cash_received",
+        "allocated_payments",
+        "outstanding"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "sales",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.09.totals",
+        "R01.09.filters",
+        "R01.09.permissions",
+        "R01.09.drilldowns",
+        "R01.09.history",
+        "R01.09.exports"
+      ],
+      "formula": "Bucket net posted sales by business-local document day; subtract effective returns; cash receipts are separate.",
+      "reference_fixture": "SALE",
+      "reference_expected": "Selected local day gross 300.00, returns 40.00, net 260.00; receipts 140.00.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.10",
+      "name": "Weekly sales",
+      "source_name": "Weekly sales",
+      "family": "Sales",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 602
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/weekly-sales",
+      "planned_api": "/api/v1/reports/sales/weekly-sales",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "product_id",
+        "category_id",
+        "warehouse_id",
+        "customer_id"
+      ],
+      "columns": [
+        "period",
+        "invoice",
+        "customer",
+        "product",
+        "unit",
+        "quantity",
+        "currency",
+        "invoice_total",
+        "cash_received",
+        "allocated_payments",
+        "outstanding"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "sales",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.10.totals",
+        "R01.10.filters",
+        "R01.10.permissions",
+        "R01.10.drilldowns",
+        "R01.10.history",
+        "R01.10.exports"
+      ],
+      "formula": "Aggregate net sales into business-local Monday-start weeks (proposed baseline); include only selected date range.",
+      "reference_fixture": "SALE",
+      "reference_expected": "Selected week net 260.00; all source rows reconcile to daily totals.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.11",
+      "name": "Monthly sales",
+      "source_name": "Monthly sales",
+      "family": "Sales",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 603
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/monthly-sales",
+      "planned_api": "/api/v1/reports/sales/monthly-sales",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "product_id",
+        "category_id",
+        "warehouse_id",
+        "customer_id"
+      ],
+      "columns": [
+        "period",
+        "invoice",
+        "customer",
+        "product",
+        "unit",
+        "quantity",
+        "currency",
+        "invoice_total",
+        "cash_received",
+        "allocated_payments",
+        "outstanding"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "sales",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.11.totals",
+        "R01.11.filters",
+        "R01.11.permissions",
+        "R01.11.drilldowns",
+        "R01.11.history",
+        "R01.11.exports"
+      ],
+      "formula": "Bucket net sales by business-local calendar month; exclude next-month boundary fixture.",
+      "reference_fixture": "SALE",
+      "reference_expected": "January net 260.00; February boundary sale 50.00 is excluded.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.12",
+      "name": "Annual sales",
+      "source_name": "Annual sales",
+      "family": "Sales",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 604
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/annual-sales",
+      "planned_api": "/api/v1/reports/sales/annual-sales",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "product_id",
+        "category_id",
+        "warehouse_id",
+        "customer_id"
+      ],
+      "columns": [
+        "period",
+        "invoice",
+        "customer",
+        "product",
+        "unit",
+        "quantity",
+        "currency",
+        "invoice_total",
+        "cash_received",
+        "allocated_payments",
+        "outstanding"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "sales",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.12.totals",
+        "R01.12.filters",
+        "R01.12.permissions",
+        "R01.12.drilldowns",
+        "R01.12.history",
+        "R01.12.exports"
+      ],
+      "formula": "Bucket net sales by business-local calendar year; fiscal-year reporting must be separately labeled.",
+      "reference_fixture": "SALE",
+      "reference_expected": "Selected calendar-year/range net 260.00 for the baseline rows; exclude out-of-range controls.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.13",
+      "name": "Customer-wise sales",
+      "source_name": "Customer-wise sales",
+      "family": "Sales",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 605
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/customer-wise-sales",
+      "planned_api": "/api/v1/reports/sales/customer-wise-sales",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "product_id",
+        "category_id",
+        "warehouse_id",
+        "customer_id"
+      ],
+      "columns": [
+        "period",
+        "invoice",
+        "customer",
+        "product",
+        "unit",
+        "quantity",
+        "currency",
+        "invoice_total",
+        "cash_received",
+        "allocated_payments",
+        "outstanding"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "sales",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.13.totals",
+        "R01.13.filters",
+        "R01.13.permissions",
+        "R01.13.drilldowns",
+        "R01.13.history",
+        "R01.13.exports"
+      ],
+      "formula": "Group snapshotted net sales by customer identity, keeping anonymous POS sales explicit.",
+      "reference_fixture": "SALE",
+      "reference_expected": "Customer A gross 300.00 minus returns 40.00 = 260.00.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.14",
+      "name": "Product-wise sales",
+      "source_name": "Product-wise sales",
+      "family": "Sales",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 606
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/product-wise-sales",
+      "planned_api": "/api/v1/reports/sales/product-wise-sales",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "product_id",
+        "category_id",
+        "warehouse_id",
+        "customer_id"
+      ],
+      "columns": [
+        "period",
+        "invoice",
+        "customer",
+        "product",
+        "unit",
+        "quantity",
+        "currency",
+        "invoice_total",
+        "cash_received",
+        "allocated_payments",
+        "outstanding"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "sales",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.14.totals",
+        "R01.14.filters",
+        "R01.14.permissions",
+        "R01.14.drilldowns",
+        "R01.14.history",
+        "R01.14.exports"
+      ],
+      "formula": "Group net quantities/revenue by snapshotted product/base unit; preserve historical prices and costs.",
+      "reference_fixture": "SALE",
+      "reference_expected": "Product sale 15 ea minus return 2 = 13 ea; net 260.00; COGS 130.00.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.15",
+      "name": "Profit margin",
+      "source_name": "Profit margin report",
+      "family": "Sales",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 607
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/profit-margin",
+      "planned_api": "/api/v1/reports/sales/profit-margin",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "product_id",
+        "category_id",
+        "warehouse_id",
+        "customer_id"
+      ],
+      "columns": [
+        "product",
+        "period",
+        "currency",
+        "net_revenue",
+        "recorded_cogs",
+        "gross_profit",
+        "margin_percent"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "sales",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.15.totals",
+        "R01.15.filters",
+        "R01.15.permissions",
+        "R01.15.drilldowns",
+        "R01.15.history",
+        "R01.15.exports"
+      ],
+      "formula": "Net sales excluding tax minus attributable recorded COGS; margin = profit / net sales; zero denominator returns null.",
+      "reference_fixture": "SALE",
+      "reference_expected": "Revenue 260.00 - COGS 130.00 = gross profit 130.00; margin 50.00%.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.16",
+      "name": "Credit sales",
+      "source_name": "Credit sales report",
+      "family": "Sales",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 608
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/credit-sales",
+      "planned_api": "/api/v1/reports/sales/credit-sales",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "product_id",
+        "category_id",
+        "warehouse_id",
+        "customer_id"
+      ],
+      "columns": [
+        "date",
+        "invoice",
+        "customer",
+        "currency",
+        "invoice_total",
+        "cash_received",
+        "allocated_payments",
+        "outstanding"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "sales",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.16.totals",
+        "R01.16.filters",
+        "R01.16.permissions",
+        "R01.16.drilldowns",
+        "R01.16.history",
+        "R01.16.exports"
+      ],
+      "formula": "Filter invoice payment terms, not current settlement status; show invoice amounts, effective returns and outstanding separately.",
+      "reference_fixture": "SALE",
+      "reference_expected": "Credit net sales 160.00; payment 40.00; remaining AR 120.00. Not cash received 160.00.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.17",
+      "name": "Cash sales",
+      "source_name": "Cash sales report",
+      "family": "Sales",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 609
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/cash-sales",
+      "planned_api": "/api/v1/reports/sales/cash-sales",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "product_id",
+        "category_id",
+        "warehouse_id",
+        "customer_id"
+      ],
+      "columns": [
+        "date",
+        "invoice",
+        "customer",
+        "currency",
+        "invoice_total",
+        "cash_received",
+        "cash_refunded",
+        "net_cash_received"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "sales",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.17.totals",
+        "R01.17.filters",
+        "R01.17.permissions",
+        "R01.17.drilldowns",
+        "R01.17.history",
+        "R01.17.exports"
+      ],
+      "formula": "Filter fully settled cash-sale classification; keep later receipts against credit invoices separate.",
+      "reference_fixture": "SALE",
+      "reference_expected": "Cash-sale revenue/receipt 100.00; credit-customer payment 40.00 is not another cash sale.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.18",
+      "name": "Supplier-wise purchases",
+      "source_name": "Supplier-wise purchases",
+      "family": "Purchases",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 612
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/supplier-wise-purchases",
+      "planned_api": "/api/v1/reports/purchases/supplier-wise-purchases",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "product_id",
+        "category_id",
+        "warehouse_id",
+        "supplier_id"
+      ],
+      "columns": [
+        "date",
+        "reference",
+        "supplier",
+        "product",
+        "unit",
+        "ordered",
+        "received",
+        "invoiced",
+        "returned",
+        "outstanding",
+        "currency",
+        "invoice_total"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "purchases",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.18.totals",
+        "R01.18.filters",
+        "R01.18.permissions",
+        "R01.18.drilldowns",
+        "R01.18.history",
+        "R01.18.exports"
+      ],
+      "formula": "Group posted supplier invoice amounts net of effective purchase returns; receiving is a separate quantity event.",
+      "reference_fixture": "BUY",
+      "reference_expected": "Supplier A invoice 200.00 - return 20.00 = net purchases 180.00.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.19",
+      "name": "Product-wise purchases",
+      "source_name": "Product-wise purchases",
+      "family": "Purchases",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 613
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/product-wise-purchases",
+      "planned_api": "/api/v1/reports/purchases/product-wise-purchases",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "product_id",
+        "category_id",
+        "warehouse_id",
+        "supplier_id"
+      ],
+      "columns": [
+        "date",
+        "reference",
+        "supplier",
+        "product",
+        "unit",
+        "ordered",
+        "received",
+        "invoiced",
+        "returned",
+        "outstanding",
+        "currency",
+        "invoice_total"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "purchases",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.19.totals",
+        "R01.19.filters",
+        "R01.19.permissions",
+        "R01.19.drilldowns",
+        "R01.19.history",
+        "R01.19.exports"
+      ],
+      "formula": "Group invoice/matched purchase lines by product/unit using recorded costs and allocated charges.",
+      "reference_fixture": "BUY",
+      "reference_expected": "20 ea invoiced - 2 returned = net 18 ea / 180.00; no second receipt on invoice posting.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.20",
+      "name": "Purchase returns",
+      "source_name": "Purchase returns",
+      "family": "Purchases",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 614
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/purchase-returns",
+      "planned_api": "/api/v1/reports/purchases/purchase-returns",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "product_id",
+        "category_id",
+        "warehouse_id",
+        "supplier_id"
+      ],
+      "columns": [
+        "date",
+        "reference",
+        "supplier",
+        "product",
+        "unit",
+        "ordered",
+        "received",
+        "invoiced",
+        "returned",
+        "outstanding",
+        "currency",
+        "invoice_total"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "purchases",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.20.totals",
+        "R01.20.filters",
+        "R01.20.permissions",
+        "R01.20.drilldowns",
+        "R01.20.history",
+        "R01.20.exports"
+      ],
+      "formula": "List effective return quantities and original cost/tax credits with source invoice/receipt references.",
+      "reference_fixture": "BUY",
+      "reference_expected": "Return 2 ea / 20.00; linked original unit cost 10.00.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.21",
+      "name": "Outstanding purchases",
+      "source_name": "Outstanding purchases",
+      "family": "Purchases",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 615
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/outstanding-purchases",
+      "planned_api": "/api/v1/reports/purchases/outstanding-purchases",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "product_id",
+        "category_id",
+        "warehouse_id",
+        "supplier_id",
+        "as_of"
+      ],
+      "columns": [
+        "date",
+        "reference",
+        "supplier",
+        "product",
+        "unit",
+        "ordered",
+        "received",
+        "invoiced",
+        "returned",
+        "outstanding",
+        "currency",
+        "invoice_total"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "purchases",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.21.totals",
+        "R01.21.filters",
+        "R01.21.permissions",
+        "R01.21.drilldowns",
+        "R01.21.history",
+        "R01.21.exports"
+      ],
+      "formula": "Show unpaid posted invoices separately from ordered-but-unreceived quantities; apply effective allocations as of cutoff.",
+      "reference_fixture": "BUY",
+      "reference_expected": "AP 100.00 = invoice 200.00 - return 20.00 - payment 80.00; unreceived order 80 ea is separate.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.22",
+      "name": "Purchase history",
+      "source_name": "Purchase history",
+      "family": "Purchases",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 616
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/purchase-history",
+      "planned_api": "/api/v1/reports/purchases/purchase-history",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "product_id",
+        "category_id",
+        "warehouse_id",
+        "supplier_id"
+      ],
+      "columns": [
+        "date",
+        "reference",
+        "supplier",
+        "product",
+        "unit",
+        "ordered",
+        "received",
+        "invoiced",
+        "returned",
+        "outstanding",
+        "currency",
+        "invoice_total"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "purchases",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.22.totals",
+        "R01.22.filters",
+        "R01.22.permissions",
+        "R01.22.drilldowns",
+        "R01.22.history",
+        "R01.22.exports"
+      ],
+      "formula": "Chronological linked order, receipt, invoice, return and settlement events; totals must not double count receiving and invoicing.",
+      "reference_fixture": "BUY",
+      "reference_expected": "Order 100 ea; receipt 20; invoice 200.00; return 2/20.00; payment 80.00; AP 100.00.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.23",
+      "name": "Customer ledger",
+      "source_name": "Customer ledger",
+      "family": "Accounting",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 619
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/customer-ledger",
+      "planned_api": "/api/v1/reports/accounting/customer-ledger",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "as_of",
+        "customer_id"
+      ],
+      "columns": [
+        "date",
+        "reference",
+        "account",
+        "party",
+        "currency",
+        "debit",
+        "credit",
+        "server_balance"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "financial_statements",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.23.totals",
+        "R01.23.filters",
+        "R01.23.permissions",
+        "R01.23.drilldowns",
+        "R01.23.history",
+        "R01.23.exports"
+      ],
+      "formula": "Opening AR plus effective debit events minus credit notes/payments; include source and running balance.",
+      "reference_fixture": "ACC",
+      "reference_expected": "Customer A AR 200.00 - credit 40.00 - receipt 40.00 = 120.00 at cutoff.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.24",
+      "name": "Supplier ledger",
+      "source_name": "Supplier ledger",
+      "family": "Accounting",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 620
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/supplier-ledger",
+      "planned_api": "/api/v1/reports/accounting/supplier-ledger",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "as_of",
+        "supplier_id"
+      ],
+      "columns": [
+        "date",
+        "reference",
+        "account",
+        "party",
+        "currency",
+        "debit",
+        "credit",
+        "server_balance"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "financial_statements",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.24.totals",
+        "R01.24.filters",
+        "R01.24.permissions",
+        "R01.24.drilldowns",
+        "R01.24.history",
+        "R01.24.exports"
+      ],
+      "formula": "Opening AP plus effective invoices minus debit notes/payments; label debit/credit directions.",
+      "reference_fixture": "ACC",
+      "reference_expected": "Supplier A AP 200.00 - debit note 20.00 - payment 80.00 = 100.00 at cutoff.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.25",
+      "name": "General Ledger",
+      "source_name": "General ledger",
+      "family": "Accounting",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 621
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/general-ledger",
+      "planned_api": "/api/v1/reports/accounting/general-ledger",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "account_id",
+        "customer_id",
+        "supplier_id",
+        "as_of"
+      ],
+      "columns": [
+        "date",
+        "reference",
+        "account",
+        "party",
+        "currency",
+        "debit",
+        "credit",
+        "server_balance"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "financial_statements",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.25.totals",
+        "R01.25.filters",
+        "R01.25.permissions",
+        "R01.25.drilldowns",
+        "R01.25.history",
+        "R01.25.exports"
+      ],
+      "formula": "Opening plus posted journal debits/credits by account through cutoff; no mutable master balance.",
+      "reference_fixture": "ACC",
+      "reference_expected": "Inventory 1050.00 debit, cash 40.00 debit, AR 120.00 debit, AP 100.00 credit; all source journals balanced.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.26",
+      "name": "Cash Book",
+      "source_name": "Cash book",
+      "family": "Accounting",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 622
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/cash-book",
+      "planned_api": "/api/v1/reports/accounting/cash-book",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "account_id",
+        "customer_id",
+        "supplier_id",
+        "as_of"
+      ],
+      "columns": [
+        "date",
+        "reference",
+        "account",
+        "party",
+        "currency",
+        "debit",
+        "credit",
+        "server_balance"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "financial_statements",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.26.totals",
+        "R01.26.filters",
+        "R01.26.permissions",
+        "R01.26.drilldowns",
+        "R01.26.history",
+        "R01.26.exports"
+      ],
+      "formula": "Classified cash-account journal movements with opening/running/closing balances; never invoice totals.",
+      "reference_fixture": "ACC",
+      "reference_expected": "Receipts 140.00 - supplier payment 80.00 - expense 20.00 = cash 40.00.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.27",
+      "name": "Bank Book",
+      "source_name": "Bank book",
+      "family": "Accounting",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 623
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/bank-book",
+      "planned_api": "/api/v1/reports/accounting/bank-book",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "account_id",
+        "customer_id",
+        "supplier_id",
+        "as_of"
+      ],
+      "columns": [
+        "date",
+        "reference",
+        "account",
+        "party",
+        "currency",
+        "debit",
+        "credit",
+        "server_balance"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "financial_statements",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.27.totals",
+        "R01.27.filters",
+        "R01.27.permissions",
+        "R01.27.drilldowns",
+        "R01.27.history",
+        "R01.27.exports"
+      ],
+      "formula": "Only selected bank-account journal movements; cash-to-bank transfers have equal opposite liquid-asset legs.",
+      "reference_fixture": "ACC",
+      "reference_expected": "Baseline bank is 0.00; separate transfer variant: cash -10.00 / bank +10.00, no income.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.28",
+      "name": "Trial balance",
+      "source_name": "Trial balance",
+      "family": "Accounting",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 624
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/trial-balance",
+      "planned_api": "/api/v1/reports/accounting/trial-balance",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "as_of"
+      ],
+      "columns": [
+        "account_code",
+        "account",
+        "currency",
+        "debit",
+        "credit"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "financial_statements",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.28.totals",
+        "R01.28.filters",
+        "R01.28.permissions",
+        "R01.28.drilldowns",
+        "R01.28.history",
+        "R01.28.exports"
+      ],
+      "formula": "Aggregate debit/credit balances from posted journals including opening entries at cutoff.",
+      "reference_fixture": "ACC",
+      "reference_expected": "Ending debits 1360.00 = credits 1360.00; turnover is labeled separately.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.29",
+      "name": "Profit and loss",
+      "source_name": "Profit and loss",
+      "family": "Accounting",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 625
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/profit-and-loss",
+      "planned_api": "/api/v1/reports/accounting/profit-and-loss",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "as_of"
+      ],
+      "columns": [
+        "account",
+        "classification",
+        "period",
+        "currency",
+        "amount"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "financial_statements",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.29.totals",
+        "R01.29.filters",
+        "R01.29.permissions",
+        "R01.29.drilldowns",
+        "R01.29.history",
+        "R01.29.exports"
+      ],
+      "formula": "Net recognized revenue less recorded COGS and expenses under account mappings, excluding opening equity.",
+      "reference_fixture": "ACC",
+      "reference_expected": "260.00 - 130.00 - 20.00 = profit 110.00.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.30",
+      "name": "Balance sheet",
+      "source_name": "Balance sheet",
+      "family": "Accounting",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 626
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/balance-sheet",
+      "planned_api": "/api/v1/reports/accounting/balance-sheet",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "as_of"
+      ],
+      "columns": [
+        "account",
+        "classification",
+        "as_of",
+        "currency",
+        "amount"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "financial_statements",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.30.totals",
+        "R01.30.filters",
+        "R01.30.permissions",
+        "R01.30.drilldowns",
+        "R01.30.history",
+        "R01.30.exports"
+      ],
+      "formula": "Assets = liabilities + equity including retained/current earnings at cutoff.",
+      "reference_fixture": "ACC",
+      "reference_expected": "Assets 1210.00 = liabilities 100.00 + opening equity 1000.00 + earnings 110.00.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.31",
+      "name": "Cash flow",
+      "source_name": "Cash flow",
+      "family": "Accounting",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 627
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/cash-flow",
+      "planned_api": "/api/v1/reports/accounting/cash-flow",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "as_of"
+      ],
+      "columns": [
+        "cash_account",
+        "classification",
+        "period",
+        "currency",
+        "cash_in",
+        "cash_out",
+        "net_cash"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "financial_statements",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.31.totals",
+        "R01.31.filters",
+        "R01.31.permissions",
+        "R01.31.drilldowns",
+        "R01.31.history",
+        "R01.31.exports"
+      ],
+      "formula": "Aggregate classified cash/bank journal movements; eliminate internal transfers; reconcile opening-to-closing liquid funds.",
+      "reference_fixture": "ACC",
+      "reference_expected": "Operating net cash 40.00; financing/investing 0.00; opening 0.00 to closing 40.00.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.32",
+      "name": "Receivables aging",
+      "source_name": "Receivables aging",
+      "family": "Accounting",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 628
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/receivables-aging",
+      "planned_api": "/api/v1/reports/accounting/receivables-aging",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "as_of",
+        "customer_id"
+      ],
+      "columns": [
+        "customer",
+        "as_of",
+        "currency",
+        "current",
+        "days_1_30",
+        "days_31_60",
+        "days_61_90",
+        "days_90_plus",
+        "total"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "financial_statements",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.32.totals",
+        "R01.32.filters",
+        "R01.32.permissions",
+        "R01.32.drilldowns",
+        "R01.32.history",
+        "R01.32.exports"
+      ],
+      "formula": "As-of unpaid AR by contractual due date; apply only allocations/credits effective by cutoff.",
+      "reference_fixture": "ACC",
+      "reference_expected": "AR 120.00 in 1\u201330 days overdue (due Jan 15, cutoff Jan 31); February receipt excluded.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.33",
+      "name": "Payables aging",
+      "source_name": "Payables aging",
+      "family": "Accounting",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 629
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/payables-aging",
+      "planned_api": "/api/v1/reports/accounting/payables-aging",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "as_of",
+        "supplier_id"
+      ],
+      "columns": [
+        "supplier",
+        "as_of",
+        "currency",
+        "current",
+        "days_1_30",
+        "days_31_60",
+        "days_61_90",
+        "days_90_plus",
+        "total"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "financial_statements",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.33.totals",
+        "R01.33.filters",
+        "R01.33.permissions",
+        "R01.33.drilldowns",
+        "R01.33.history",
+        "R01.33.exports"
+      ],
+      "formula": "As-of unpaid AP by contractual due date; apply only allocations/debits effective by cutoff.",
+      "reference_fixture": "ACC",
+      "reference_expected": "AP 100.00 in 1\u201330 days overdue; February supplier payment excluded.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.34",
+      "name": "Daily production",
+      "source_name": "Daily production",
+      "family": "Manufacturing",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 632
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/daily-production",
+      "planned_api": "/api/v1/reports/manufacturing/daily-production",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "product_id",
+        "category_id",
+        "warehouse_id",
+        "batch_id",
+        "work_order_id"
+      ],
+      "columns": [
+        "date",
+        "work_order",
+        "product",
+        "batch",
+        "unit",
+        "planned",
+        "produced",
+        "accepted",
+        "rejected",
+        "remaining"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "manufacturing",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.34.totals",
+        "R01.34.filters",
+        "R01.34.permissions",
+        "R01.34.drilldowns",
+        "R01.34.history",
+        "R01.34.exports"
+      ],
+      "formula": "Group effective accepted/rejected production quantities by local production date and compatible units.",
+      "reference_fixture": "MFG",
+      "reference_expected": "10 accepted finished ea on production day; historical cost 150.00.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.35",
+      "name": "Batch-wise production",
+      "source_name": "Batch-wise production",
+      "family": "Manufacturing",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 633
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/batch-wise-production",
+      "planned_api": "/api/v1/reports/manufacturing/batch-wise-production",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "product_id",
+        "category_id",
+        "warehouse_id",
+        "batch_id",
+        "work_order_id"
+      ],
+      "columns": [
+        "date",
+        "work_order",
+        "product",
+        "batch",
+        "unit",
+        "planned",
+        "produced",
+        "accepted",
+        "rejected",
+        "remaining"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "manufacturing",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.35.totals",
+        "R01.35.filters",
+        "R01.35.permissions",
+        "R01.35.drilldowns",
+        "R01.35.history",
+        "R01.35.exports"
+      ],
+      "formula": "Produced quantities and recorded material/labor/overhead by output batch; distinguish production from remaining stock.",
+      "reference_fixture": "MFG",
+      "reference_expected": "Batch G: produced 10 ea / cost 150.00; sold 4, damaged 1, remaining 5.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.36",
+      "name": "Manufacturing cost",
+      "source_name": "Manufacturing cost",
+      "family": "Manufacturing",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 634
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/manufacturing-cost",
+      "planned_api": "/api/v1/reports/manufacturing/manufacturing-cost",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "product_id",
+        "category_id",
+        "warehouse_id",
+        "batch_id",
+        "work_order_id"
+      ],
+      "columns": [
+        "work_order",
+        "product",
+        "currency",
+        "material_cost",
+        "labor_cost",
+        "overhead_cost",
+        "waste_cost",
+        "planned_cost",
+        "actual_cost",
+        "variance"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "manufacturing",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.36.totals",
+        "R01.36.filters",
+        "R01.36.permissions",
+        "R01.36.drilldowns",
+        "R01.36.history",
+        "R01.36.exports"
+      ],
+      "formula": "Recorded consumed material + allocated labor/overhead, with explicit WIP and output cost reconciliation.",
+      "reference_fixture": "MFG",
+      "reference_expected": "100.00 raw + 20.00 labor + 30.00 overhead = 150.00; 10 ea unit cost 15.00; no duplicated expense.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.37",
+      "name": "Raw material consumption",
+      "source_name": "Raw material consumption",
+      "family": "Manufacturing",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 635
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/raw-material-consumption",
+      "planned_api": "/api/v1/reports/manufacturing/raw-material-consumption",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "product_id",
+        "category_id",
+        "warehouse_id",
+        "batch_id",
+        "work_order_id"
+      ],
+      "columns": [
+        "date",
+        "work_order",
+        "material",
+        "source_batch",
+        "warehouse",
+        "unit",
+        "planned",
+        "consumed",
+        "remaining",
+        "currency",
+        "recorded_cost"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "manufacturing",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.37.totals",
+        "R01.37.filters",
+        "R01.37.permissions",
+        "R01.37.drilldowns",
+        "R01.37.history",
+        "R01.37.exports"
+      ],
+      "formula": "Sum actual batch issues in base units and their historical inventory costs, linked to orders/output genealogy.",
+      "reference_fixture": "MFG",
+      "reference_expected": "20 kg at 5.00 = 100.00; 2 kg normal waste is already included, not another issue.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.38",
+      "name": "Production wastage",
+      "source_name": "Production wastage",
+      "family": "Manufacturing",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 636
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/production-wastage",
+      "planned_api": "/api/v1/reports/manufacturing/production-wastage",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "product_id",
+        "category_id",
+        "warehouse_id",
+        "batch_id",
+        "work_order_id"
+      ],
+      "columns": [
+        "date",
+        "work_order",
+        "material",
+        "batch",
+        "unit",
+        "normal_waste",
+        "abnormal_waste",
+        "scrap",
+        "currency",
+        "recorded_cost"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "manufacturing",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.38.totals",
+        "R01.38.filters",
+        "R01.38.permissions",
+        "R01.38.drilldowns",
+        "R01.38.history",
+        "R01.38.exports"
+      ],
+      "formula": "Separate normal waste, abnormal loss, scrap/rework and finished damage with explicit disposition/cost treatment.",
+      "reference_fixture": "MFG",
+      "reference_expected": "Normal raw waste 2 kg / 10.00 included in production cost; finished damage 1 ea / 15.00 is a separate loss.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.39",
+      "name": "Finished goods",
+      "source_name": "Finished goods",
+      "family": "Manufacturing",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 637
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/finished-goods",
+      "planned_api": "/api/v1/reports/manufacturing/finished-goods",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "product_id",
+        "category_id",
+        "warehouse_id",
+        "batch_id",
+        "work_order_id",
+        "as_of"
+      ],
+      "columns": [
+        "date",
+        "work_order",
+        "product",
+        "batch",
+        "unit",
+        "planned",
+        "produced",
+        "accepted",
+        "rejected",
+        "remaining"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "manufacturing",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.39.totals",
+        "R01.39.filters",
+        "R01.39.permissions",
+        "R01.39.drilldowns",
+        "R01.39.history",
+        "R01.39.exports"
+      ],
+      "formula": "Output and eligible finished stock by batch/location at cutoff; subtract actual sales/damage, not planned output.",
+      "reference_fixture": "MFG",
+      "reference_expected": "Produced 10 ea; sold 4; damage 1; remaining 5 ea / 75.00.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    },
+    {
+      "id": "R01.40",
+      "name": "Batch profitability",
+      "source_name": "Batch profitability",
+      "family": "Manufacturing",
+      "source": {
+        "path": "docs/erp-source/00_Original_Requirements.md",
+        "line": 638
+      },
+      "phase_source": "docs/erp-source/07_Phase_7_Reports_and_Analytics.md#required-report-coverage",
+      "screen": "/reports/batch-profitability",
+      "planned_api": "/api/v1/reports/manufacturing/batch-profitability",
+      "api_status": "not_implemented",
+      "filters": [
+        "q",
+        "date_from",
+        "date_to",
+        "product_id",
+        "category_id",
+        "warehouse_id",
+        "batch_id",
+        "work_order_id",
+        "as_of"
+      ],
+      "columns": [
+        "batch",
+        "product",
+        "unit",
+        "produced",
+        "sold",
+        "returned",
+        "damaged",
+        "remaining",
+        "currency",
+        "net_sales",
+        "recorded_cost",
+        "profit"
+      ],
+      "read_permission": "reports:read",
+      "export_permission": "reports:export",
+      "domain_scope": "manufacturing",
+      "formats": [
+        "pdf",
+        "xlsx"
+      ],
+      "verification_status": "not_run_missing_business_services",
+      "test_cases": [
+        "R01.40.totals",
+        "R01.40.filters",
+        "R01.40.permissions",
+        "R01.40.drilldowns",
+        "R01.40.history",
+        "R01.40.exports"
+      ],
+      "formula": "Attributable net realized revenue minus sold recorded cost and separately recorded attributable losses; unsold stock is not revenue.",
+      "reference_fixture": "MFG",
+      "reference_expected": "Revenue 100.00 - sold cost 60.00 - damage loss 15.00 = 25.00; remaining stock value 75.00.",
+      "date_policy": "See report-verification.md; source cutoff and business timezone are mandatory.",
+      "definition_status": "proposed_acceptance_baseline_not_runtime_behavior"
+    }
+  ],
+  "fixtures": {
+    "INV": "Isolated stock fixture: Bolt (ea), warehouses A/B; opening 100 at 10.00, receipt 20 at 10.00, issue 10, resalable return 2 at original 10.00, written-off damage 3, transfer 5 A\u2192B. No reservation in baseline. Opening batch ends 89; receipt batch 20. Separate Zero product, low-stock threshold 150, and kg product prevent unit-mixing. Add held/reserved/expired variants before acceptance.",
+    "SALE": "Isolated sales fixture: customer A, one product costing 10.00/ea; credit invoice 10 at 20.00 (200.00), credit receipt 40.00, cash invoice 5 at 20.00 (100.00) with receipt 100.00, resalable credit return 2 at 20.00 (40.00) costing 20.00. No tax/discount in arithmetic baseline; add configured tax/discount variants. Event date 2026-01-31 in Asia/Karachi; out-of-range control sale at 2026-01-31T19:00:00Z is February locally.",
+    "BUY": "Isolated purchase fixture: order 100 ea; receipt 20 at 10.00; matched supplier invoice 200.00 (must not receive twice); return 2 at original 10.00 with debit note 20.00; payment 80.00. Remaining unreceived 80 ea, AP 100.00. No tax/charges in baseline; add snapshotted tax/landed-cost variants.",
+    "ACC": "Independent accounting fixture: opening inventory/equity 1000.00; purchase invoice/receipt 200.00; purchase return 20.00; supplier payment 80.00; credit sales 200.00; cash sales 100.00; customer credit return 40.00 (cost 20.00); sales COGS before return 150.00; credit receipt 40.00; cash-sale receipt 100.00; cash expense 20.00. Ending inventory 1050.00, cash 40.00, AR 120.00, AP 100.00, net revenue 260.00, COGS 130.00, expense 20.00, equity 1000.00. Due Jan 15, as-of Jan 31. February receipts/payments 50.00/30.00 must not change January aging.",
+    "MFG": "Isolated manufacturing fixture: consumed 20 kg at 5.00 (100.00), including 2 kg normal process waste; labor 20.00, overhead 30.00; output 10 accepted ea at 15.00. Sell 4 at 25.00 (revenue 100.00, cost 60.00), write off 1 finished ea (15.00), remaining 5 at 15.00 (75.00). WIP clears on completion; later sale/damage do not rewrite produced quantity or cost. Add partial output, quarantine/rejection and zero-yield variants."
+  }
+}

@@ -1,9 +1,9 @@
-.PHONY: help install backend frontend worker build lint test test-integration test-e2e test-local up down migrate health contracts
+.PHONY: help install backend frontend worker build lint test test-integration test-e2e test-local up down migrate health contracts traceability verify-sources
 PYTHON ?= python3
 BACKEND_PYTHON := backend/venv/bin/python
 
 help:
-	@echo "install backend frontend worker build lint test test-integration test-e2e test-local up down migrate health"
+	@echo "install backend frontend worker build lint test test-integration test-e2e test-local up down migrate health traceability verify-sources"
 
 install:
 	$(PYTHON) -m venv backend/venv
@@ -54,3 +54,9 @@ health:
 
 contracts:
 	cd backend && venv/bin/python -m scripts.export_openapi
+
+traceability:
+	$(PYTHON) scripts/source_traceability.py --write
+
+verify-sources:
+	$(PYTHON) scripts/source_traceability.py

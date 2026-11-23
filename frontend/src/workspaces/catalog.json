@@ -7529,8 +7529,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/current-stock",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/inventory/current-stock",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -7554,7 +7554,7 @@
     "sourceRequirement": "R01.01",
     "family": "Inventory",
     "reportKey": "current-stock",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/inventory/current-stock from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -7564,9 +7564,14 @@
       "date_to",
       "product_id",
       "category_id",
-      "warehouse_id"
+      "warehouse_id",
+      "as_of",
+      "batch_id"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 591,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/stock-movement",
@@ -7574,8 +7579,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/stock-movement",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/inventory/stock-movement",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -7599,7 +7604,7 @@
     "sourceRequirement": "R01.02",
     "family": "Inventory",
     "reportKey": "stock-movement",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/inventory/stock-movement from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -7609,9 +7614,14 @@
       "date_to",
       "product_id",
       "category_id",
-      "warehouse_id"
+      "warehouse_id",
+      "as_of",
+      "batch_id"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 592,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/stock-valuation",
@@ -7619,8 +7629,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/stock-valuation",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/inventory/stock-valuation",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -7645,7 +7655,7 @@
     "sourceRequirement": "R01.03",
     "family": "Inventory",
     "reportKey": "stock-valuation",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/inventory/stock-valuation from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -7655,9 +7665,14 @@
       "date_to",
       "product_id",
       "category_id",
-      "warehouse_id"
+      "warehouse_id",
+      "as_of",
+      "batch_id"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 593,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/low-stock",
@@ -7665,8 +7680,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/low-stock",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/inventory/low-stock",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -7687,7 +7702,7 @@
     "sourceRequirement": "R01.04",
     "family": "Inventory",
     "reportKey": "low-stock",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/inventory/low-stock from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -7697,9 +7712,14 @@
       "date_to",
       "product_id",
       "category_id",
-      "warehouse_id"
+      "warehouse_id",
+      "as_of",
+      "batch_id"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 594,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/out-of-stock",
@@ -7707,8 +7727,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/out-of-stock",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/inventory/out-of-stock",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -7730,7 +7750,7 @@
     "sourceRequirement": "R01.05",
     "family": "Inventory",
     "reportKey": "out-of-stock",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/inventory/out-of-stock from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -7740,9 +7760,14 @@
       "date_to",
       "product_id",
       "category_id",
-      "warehouse_id"
+      "warehouse_id",
+      "as_of",
+      "batch_id"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 595,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/batch-wise-stock",
@@ -7750,8 +7775,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/batch-wise-stock",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/inventory/batch-wise-stock",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -7775,7 +7800,7 @@
     "sourceRequirement": "R01.06",
     "family": "Inventory",
     "reportKey": "batch-wise-stock",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/inventory/batch-wise-stock from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -7785,9 +7810,14 @@
       "date_to",
       "product_id",
       "category_id",
-      "warehouse_id"
+      "warehouse_id",
+      "as_of",
+      "batch_id"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 596,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/warehouse-wise-stock",
@@ -7795,8 +7825,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/warehouse-wise-stock",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/inventory/warehouse-wise-stock",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -7820,7 +7850,7 @@
     "sourceRequirement": "R01.07",
     "family": "Inventory",
     "reportKey": "warehouse-wise-stock",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/inventory/warehouse-wise-stock from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -7830,9 +7860,14 @@
       "date_to",
       "product_id",
       "category_id",
-      "warehouse_id"
+      "warehouse_id",
+      "as_of",
+      "batch_id"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 597,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/damaged-stock",
@@ -7840,8 +7875,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/damaged-stock",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/inventory/damaged-stock",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -7866,7 +7901,7 @@
     "sourceRequirement": "R01.08",
     "family": "Inventory",
     "reportKey": "damaged-stock",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/inventory/damaged-stock from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -7876,9 +7911,14 @@
       "date_to",
       "product_id",
       "category_id",
-      "warehouse_id"
+      "warehouse_id",
+      "as_of",
+      "batch_id"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 598,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/daily-sales",
@@ -7886,8 +7926,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/daily-sales",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/sales/daily-sales",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -7914,7 +7954,7 @@
     "sourceRequirement": "R01.09",
     "family": "Sales",
     "reportKey": "daily-sales",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/sales/daily-sales from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -7927,7 +7967,10 @@
       "warehouse_id",
       "customer_id"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 601,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/weekly-sales",
@@ -7935,8 +7978,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/weekly-sales",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/sales/weekly-sales",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -7963,7 +8006,7 @@
     "sourceRequirement": "R01.10",
     "family": "Sales",
     "reportKey": "weekly-sales",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/sales/weekly-sales from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -7976,7 +8019,10 @@
       "warehouse_id",
       "customer_id"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 602,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/monthly-sales",
@@ -7984,8 +8030,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/monthly-sales",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/sales/monthly-sales",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -8012,7 +8058,7 @@
     "sourceRequirement": "R01.11",
     "family": "Sales",
     "reportKey": "monthly-sales",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/sales/monthly-sales from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -8025,7 +8071,10 @@
       "warehouse_id",
       "customer_id"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 603,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/annual-sales",
@@ -8033,8 +8082,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/annual-sales",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/sales/annual-sales",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -8061,7 +8110,7 @@
     "sourceRequirement": "R01.12",
     "family": "Sales",
     "reportKey": "annual-sales",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/sales/annual-sales from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -8074,7 +8123,10 @@
       "warehouse_id",
       "customer_id"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 604,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/customer-wise-sales",
@@ -8082,8 +8134,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/customer-wise-sales",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/sales/customer-wise-sales",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -8110,7 +8162,7 @@
     "sourceRequirement": "R01.13",
     "family": "Sales",
     "reportKey": "customer-wise-sales",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/sales/customer-wise-sales from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -8123,7 +8175,10 @@
       "warehouse_id",
       "customer_id"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 605,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/product-wise-sales",
@@ -8131,8 +8186,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/product-wise-sales",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/sales/product-wise-sales",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -8159,7 +8214,7 @@
     "sourceRequirement": "R01.14",
     "family": "Sales",
     "reportKey": "product-wise-sales",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/sales/product-wise-sales from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -8172,7 +8227,10 @@
       "warehouse_id",
       "customer_id"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 606,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/profit-margin",
@@ -8180,8 +8238,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/profit-margin",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/sales/profit-margin",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -8204,7 +8262,7 @@
     "sourceRequirement": "R01.15",
     "family": "Sales",
     "reportKey": "profit-margin",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/sales/profit-margin from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -8217,7 +8275,10 @@
       "warehouse_id",
       "customer_id"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 607,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/credit-sales",
@@ -8225,8 +8286,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/credit-sales",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/sales/credit-sales",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -8250,7 +8311,7 @@
     "sourceRequirement": "R01.16",
     "family": "Sales",
     "reportKey": "credit-sales",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/sales/credit-sales from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -8263,7 +8324,10 @@
       "warehouse_id",
       "customer_id"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 608,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/cash-sales",
@@ -8271,8 +8335,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/cash-sales",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/sales/cash-sales",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -8296,7 +8360,7 @@
     "sourceRequirement": "R01.17",
     "family": "Sales",
     "reportKey": "cash-sales",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/sales/cash-sales from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -8309,7 +8373,10 @@
       "warehouse_id",
       "customer_id"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 609,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/supplier-wise-purchases",
@@ -8317,8 +8384,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/supplier-wise-purchases",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/purchases/supplier-wise-purchases",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -8346,7 +8413,7 @@
     "sourceRequirement": "R01.18",
     "family": "Purchases",
     "reportKey": "supplier-wise-purchases",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/purchases/supplier-wise-purchases from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -8359,7 +8426,10 @@
       "warehouse_id",
       "supplier_id"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 612,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/product-wise-purchases",
@@ -8367,8 +8437,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/product-wise-purchases",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/purchases/product-wise-purchases",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -8396,7 +8466,7 @@
     "sourceRequirement": "R01.19",
     "family": "Purchases",
     "reportKey": "product-wise-purchases",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/purchases/product-wise-purchases from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -8409,7 +8479,10 @@
       "warehouse_id",
       "supplier_id"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 613,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/purchase-returns",
@@ -8417,8 +8490,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/purchase-returns",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/purchases/purchase-returns",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -8446,7 +8519,7 @@
     "sourceRequirement": "R01.20",
     "family": "Purchases",
     "reportKey": "purchase-returns",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/purchases/purchase-returns from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -8459,7 +8532,10 @@
       "warehouse_id",
       "supplier_id"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 614,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/outstanding-purchases",
@@ -8467,8 +8543,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/outstanding-purchases",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/purchases/outstanding-purchases",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -8496,7 +8572,7 @@
     "sourceRequirement": "R01.21",
     "family": "Purchases",
     "reportKey": "outstanding-purchases",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/purchases/outstanding-purchases from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -8507,9 +8583,13 @@
       "product_id",
       "category_id",
       "warehouse_id",
-      "supplier_id"
+      "supplier_id",
+      "as_of"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 615,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/purchase-history",
@@ -8517,8 +8597,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/purchase-history",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/purchases/purchase-history",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -8546,7 +8626,7 @@
     "sourceRequirement": "R01.22",
     "family": "Purchases",
     "reportKey": "purchase-history",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/purchases/purchase-history from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -8559,7 +8639,10 @@
       "warehouse_id",
       "supplier_id"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 616,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/customer-ledger",
@@ -8567,8 +8650,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/customer-ledger",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/accounting/customer-ledger",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -8592,7 +8675,7 @@
     "sourceRequirement": "R01.23",
     "family": "Accounting",
     "reportKey": "customer-ledger",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/accounting/customer-ledger from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -8600,12 +8683,13 @@
       "q",
       "date_from",
       "date_to",
-      "account_id",
-      "customer_id",
-      "supplier_id",
-      "as_of"
+      "as_of",
+      "customer_id"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 619,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/supplier-ledger",
@@ -8613,8 +8697,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/supplier-ledger",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/accounting/supplier-ledger",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -8638,7 +8722,7 @@
     "sourceRequirement": "R01.24",
     "family": "Accounting",
     "reportKey": "supplier-ledger",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/accounting/supplier-ledger from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -8646,12 +8730,13 @@
       "q",
       "date_from",
       "date_to",
-      "account_id",
-      "customer_id",
-      "supplier_id",
-      "as_of"
+      "as_of",
+      "supplier_id"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 620,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/general-ledger",
@@ -8659,8 +8744,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/general-ledger",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/accounting/general-ledger",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -8684,7 +8769,7 @@
     "sourceRequirement": "R01.25",
     "family": "Accounting",
     "reportKey": "general-ledger",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/accounting/general-ledger from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -8697,7 +8782,10 @@
       "supplier_id",
       "as_of"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 621,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/cash-book",
@@ -8705,8 +8793,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/cash-book",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/accounting/cash-book",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -8730,7 +8818,7 @@
     "sourceRequirement": "R01.26",
     "family": "Accounting",
     "reportKey": "cash-book",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/accounting/cash-book from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -8743,7 +8831,10 @@
       "supplier_id",
       "as_of"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 622,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/bank-book",
@@ -8751,8 +8842,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/bank-book",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/accounting/bank-book",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -8776,7 +8867,7 @@
     "sourceRequirement": "R01.27",
     "family": "Accounting",
     "reportKey": "bank-book",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/accounting/bank-book from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -8789,7 +8880,10 @@
       "supplier_id",
       "as_of"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 623,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/trial-balance",
@@ -8797,8 +8891,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/trial-balance",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/accounting/trial-balance",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -8819,7 +8913,7 @@
     "sourceRequirement": "R01.28",
     "family": "Accounting",
     "reportKey": "trial-balance",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/accounting/trial-balance from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -8827,12 +8921,12 @@
       "q",
       "date_from",
       "date_to",
-      "account_id",
-      "customer_id",
-      "supplier_id",
       "as_of"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 624,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/profit-and-loss",
@@ -8840,8 +8934,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/profit-and-loss",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/accounting/profit-and-loss",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -8862,7 +8956,7 @@
     "sourceRequirement": "R01.29",
     "family": "Accounting",
     "reportKey": "profit-and-loss",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/accounting/profit-and-loss from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -8870,12 +8964,12 @@
       "q",
       "date_from",
       "date_to",
-      "account_id",
-      "customer_id",
-      "supplier_id",
       "as_of"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 625,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/balance-sheet",
@@ -8883,8 +8977,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/balance-sheet",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/accounting/balance-sheet",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -8905,7 +8999,7 @@
     "sourceRequirement": "R01.30",
     "family": "Accounting",
     "reportKey": "balance-sheet",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/accounting/balance-sheet from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -8913,12 +9007,12 @@
       "q",
       "date_from",
       "date_to",
-      "account_id",
-      "customer_id",
-      "supplier_id",
       "as_of"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 626,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/cash-flow",
@@ -8926,8 +9020,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/cash-flow",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/accounting/cash-flow",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -8950,7 +9044,7 @@
     "sourceRequirement": "R01.31",
     "family": "Accounting",
     "reportKey": "cash-flow",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/accounting/cash-flow from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -8958,12 +9052,12 @@
       "q",
       "date_from",
       "date_to",
-      "account_id",
-      "customer_id",
-      "supplier_id",
       "as_of"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 627,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/receivables-aging",
@@ -8971,8 +9065,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/receivables-aging",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/accounting/receivables-aging",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -8997,7 +9091,7 @@
     "sourceRequirement": "R01.32",
     "family": "Accounting",
     "reportKey": "receivables-aging",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/accounting/receivables-aging from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -9005,12 +9099,13 @@
       "q",
       "date_from",
       "date_to",
-      "account_id",
-      "customer_id",
-      "supplier_id",
-      "as_of"
+      "as_of",
+      "customer_id"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 628,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/payables-aging",
@@ -9018,8 +9113,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/payables-aging",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/accounting/payables-aging",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -9044,7 +9139,7 @@
     "sourceRequirement": "R01.33",
     "family": "Accounting",
     "reportKey": "payables-aging",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/accounting/payables-aging from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -9052,12 +9147,13 @@
       "q",
       "date_from",
       "date_to",
-      "account_id",
-      "customer_id",
-      "supplier_id",
-      "as_of"
+      "as_of",
+      "supplier_id"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 629,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/daily-production",
@@ -9065,8 +9161,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/daily-production",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/manufacturing/daily-production",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -9092,7 +9188,7 @@
     "sourceRequirement": "R01.34",
     "family": "Manufacturing",
     "reportKey": "daily-production",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/manufacturing/daily-production from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -9106,7 +9202,10 @@
       "batch_id",
       "work_order_id"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 632,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/batch-wise-production",
@@ -9114,8 +9213,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/batch-wise-production",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/manufacturing/batch-wise-production",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -9141,7 +9240,7 @@
     "sourceRequirement": "R01.35",
     "family": "Manufacturing",
     "reportKey": "batch-wise-production",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/manufacturing/batch-wise-production from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -9155,7 +9254,10 @@
       "batch_id",
       "work_order_id"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 633,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/manufacturing-cost",
@@ -9163,8 +9265,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/manufacturing-cost",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/manufacturing/manufacturing-cost",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -9190,7 +9292,7 @@
     "sourceRequirement": "R01.36",
     "family": "Manufacturing",
     "reportKey": "manufacturing-cost",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/manufacturing/manufacturing-cost from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -9204,7 +9306,10 @@
       "batch_id",
       "work_order_id"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 634,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/raw-material-consumption",
@@ -9212,8 +9317,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/raw-material-consumption",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/manufacturing/raw-material-consumption",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -9240,7 +9345,7 @@
     "sourceRequirement": "R01.37",
     "family": "Manufacturing",
     "reportKey": "raw-material-consumption",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/manufacturing/raw-material-consumption from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -9254,7 +9359,10 @@
       "batch_id",
       "work_order_id"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 635,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/production-wastage",
@@ -9262,8 +9370,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/production-wastage",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/manufacturing/production-wastage",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -9289,7 +9397,7 @@
     "sourceRequirement": "R01.38",
     "family": "Manufacturing",
     "reportKey": "production-wastage",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/manufacturing/production-wastage from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -9303,7 +9411,10 @@
       "batch_id",
       "work_order_id"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 636,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/finished-goods",
@@ -9311,8 +9422,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/finished-goods",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/manufacturing/finished-goods",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -9338,7 +9449,7 @@
     "sourceRequirement": "R01.39",
     "family": "Manufacturing",
     "reportKey": "finished-goods",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/manufacturing/finished-goods from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -9350,9 +9461,13 @@
       "category_id",
       "warehouse_id",
       "batch_id",
-      "work_order_id"
+      "work_order_id",
+      "as_of"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 637,
+    "exportPermission": "reports:export"
   },
   {
     "id": "reports/batch-profitability",
@@ -9360,8 +9475,8 @@
     "group": "Reports",
     "module": "reports",
     "path": "/reports/batch-profitability",
-    "endpoint": "/reports",
-    "status": "contract-gap",
+    "endpoint": "/reports/manufacturing/batch-profitability",
+    "status": "pending",
     "kind": "report",
     "fields": [],
     "columns": [
@@ -9389,7 +9504,7 @@
     "sourceRequirement": "R01.40",
     "family": "Manufacturing",
     "reportKey": "batch-profitability",
-    "contractNote": "Required by user-confirmed section 6 report list. Report-specific wire contracts await source reconciliation; /reports is a planned namespace only.",
+    "contractNote": "Planned GET /api/v1/reports/manufacturing/batch-profitability from Phase 7 report-family contract. No report handler or export job is implemented; payload and accounting definitions require verification before connection.",
     "readPermission": "reports:read",
     "createPermission": "reports:create",
     "updatePermission": "reports:update",
@@ -9401,8 +9516,12 @@
       "category_id",
       "warehouse_id",
       "batch_id",
-      "work_order_id"
+      "work_order_id",
+      "as_of"
     ],
-    "metrics": []
+    "metrics": [],
+    "sourceDocument": "docs/erp-source/00_Original_Requirements.md",
+    "sourceLine": 638,
+    "exportPermission": "reports:export"
   }
 ]

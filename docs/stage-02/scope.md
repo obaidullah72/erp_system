@@ -1,6 +1,6 @@
 # Stage 2 scope inventory — baseline before module implementation
 
-Source: user-supplied Stage 2 brief, sections 1–10, and docs/api.md/domain-model.md. No AGENTS.md or additional shared instruction file exists in this checkout. Source Phase 3–7 files are empty; Phase 7 is titled Manufacturing and contains no report list. Original source-phase parity and the exact report catalogue remain unresolved specification gaps. Requested source text is pending; do not claim full Stage 2 completion without reconciling it.
+Source: user-supplied Stage 2 and Stages 2–5 briefs, plus the ten populated documents extracted from `Business_ERP_All_Phases.zip` into [docs/erp-source](../erp-source/00_README.md). This includes the original requirements, shared standards and source Phases 1–8. The old empty files under `docs/phases` are not requirements sources. Source availability is resolved; implementation and verification remain separate. See [source reconciliation](../source-reconciliation.md) and [requirements traceability](../requirements-traceability.md).
 
 ## Screen/action families
 
@@ -13,7 +13,7 @@ Source: user-supplied Stage 2 brief, sections 1–10, and docs/api.md/domain-mod
 | E Sales | Orders/shipments; invoices; pricing; POS; stock/batch eligibility; returns/refunds | Barcode search; credit check; partial/full payment; reversal; print; customer/product history |
 | F Accounting | Chart/tree; journals; GL/day/cash/bank books; AR/AP; partner ledgers; aging; advances/allocations; expenses; transfers; cash closing; bank imports/reconciliation; periods; TB/P&L/BS/cash flow | Draft/post/reverse; allocation; reconcile; import; close/reopen; print/export, server-owned totals |
 | G Manufacturing | BOM/version history; schedule/calendar; orders; material availability; consumption; partial output; finished batches; labor/overhead; waste/rejected/rework; quality; planned/actual costs; traceability | Approve BOM; release order; consume; record output; quality release; cost review and genealogy drill-down |
-| H Reports | Individual named inventory/sales/purchase/accounting/manufacturing reports derived from explicit brief; original Phase 7 list pending | Filters/period/currency/units; results/totals/pagination; source drill-down; PDF/Excel export progress/failure/download/unavailable |
+| H Reports | Exactly 40 reports from original §6 and source Phase 7: 8 inventory, 9 sales, 5 purchase, 11 accounting, 7 manufacturing | Applicable date/product/customer/supplier/category/warehouse filters; units/currency; totals/pagination; source drill-down; PDF/Excel export progress/failure/download/unavailable |
 | I Administration | Settings; users; roles/grants; mappings; audit; reminders; alerts | Connected foundation list/create/update; protected controls; future mapping/configuration actions visibly unavailable |
 
 ## Implementation boundaries
@@ -22,4 +22,4 @@ Existing health/auth/user/role/business-settings endpoints are connected using t
 
 Shared components: labeled fields and errors; searchable multi-select; dates; decimal-preserving values; line editors; tables with URL filters/sort/pagination; dialogs/drawers with focus management; status badges; charts/metrics; attachment preview; notifications; print previews; all loading/empty/unavailable/denied/error states. Forms use RHF/Zod, submission locks, backend field mapping and unsaved-change protection.
 
-Detailed route/action/permission/contract traceability will be generated from the same resource catalogue used by the frontend and verified against route tests. The original source-phase gap remains distinct from pending backend connections.
+The [screen/action inventory](../stage-2-screen-action-inventory.md) is generated from the frontend resource catalog. [Report definitions and verification](../report-verification.md) records report-specific expected results and six planned checks per report. These inventories do not establish runtime correctness. The exact nine roles confirmed by the user supersede older suggested names in the source pack; the original files remain unchanged for provenance.

@@ -1,5 +1,7 @@
 # /api/v1 contract baseline
 
+**Source reconciliation (2026-11-24):** the populated [Phase 1–8 sources](erp-source/00_README.md) now define the authoritative proposed module routes. The implemented route table below remains accurate. Some early planned names below differ from those sources and are retained only as an explicit historical baseline until the affected modules are implemented. Use [source contract differences](source-reconciliation.md#contract-differences) and the [40-report registry](report-catalog.json) for current proposals. No planned source route has been added to OpenAPI merely because it appears in a document.
+
 OpenAPI at `/openapi.json` and `/docs` (development only) describes **implemented HTTP routes only**. Planned paths below intentionally return 404 today. The internal posting and inventory contracts are Python contracts, not public HTTP endpoints. The committed `docs/openapi.json` snapshot is regenerated with `make contracts`. This baseline is version 1; incompatible wire changes require a new API version.
 
 ## Implemented routes
