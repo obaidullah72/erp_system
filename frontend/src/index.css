@@ -9,3 +9,19 @@ button { cursor: pointer; }
 button:disabled { cursor: wait; }
 :focus-visible { outline: 3px solid #14b8a6; outline-offset: 4px; }
 @theme { --color-brand-50: #eefbf8; --color-brand-600: #0d806b; --color-brand-700: #096754; }
+
+@layer components {
+  .erp-input { @apply w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 outline-offset-2 disabled:cursor-not-allowed disabled:opacity-60 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-200; }
+  .erp-panel { @apply rounded-xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900; }
+}
+select.erp-input { appearance: none; padding-right: 2rem; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%2364748b'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right .5rem center; }
+.erp-dialog { margin: auto; width: min(94vw, 46rem); max-height: 88dvh; border: 1px solid #cbd5e1; border-radius: 1rem; padding: 0; background: white; color: #172b3a; overflow-y: auto; }
+.erp-dialog::backdrop { background: rgb(15 23 42 / .6); }
+.dark .erp-dialog { background: #0f172a; color: #e2e8f0; border-color: #334155; }
+.erp-drawer { margin: 0 0 0 auto; height: 100dvh; max-height: 100dvh; width: min(94vw, 36rem); border-radius: 0; }
+@media print {
+ body * { visibility: hidden; }
+ .erp-print, .erp-print * { visibility: visible; }
+ .erp-print { position: absolute; inset: 0; background: white !important; color: black !important; padding: 1cm; }
+ .erp-print button, .no-print { display: none !important; }
+}

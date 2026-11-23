@@ -1,0 +1,13 @@
+# Existing key page dependencies
+- frontend/src/pages/DashboardPage.jsx
+  - frontend/src/auth/useAuth.js
+  - frontend/src/components/ui/EmptyState.jsx
+- frontend/src/pages/LoginPage.jsx
+  - frontend/src/auth/useAuth.js
+  - frontend/src/components/ui/Input.jsx
+  - frontend/src/components/ui/Button.jsx
+- frontend/src/pages/SystemStatusPage.jsx
+  - frontend/src/lib/axios.js
+    - frontend/src/config/env.js
+  - frontend/src/components/ui/ErrorState.jsx
+- frontend/src/pages/RoadmapPage.jsx

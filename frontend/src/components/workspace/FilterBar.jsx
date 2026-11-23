@@ -1,0 +1,11 @@
+import { recordStates } from '../../workspaces/actions'
+import { label } from '../../workspaces/catalog'
+import Button from '../ui/Button'
+export default function FilterBar({ state, update, filters, connected = false, roles = false }) {
+  const dateError = state.date_from && state.date_to && state.date_from > state.date_to
+  return <section aria-label="Record filters" className="erp-panel mb-5 p-4"><div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    {!roles && <label className="text-sm">Search<input aria-label="Search records" className="erp-input mt-1" value={state.q} maxLength={100} onChange={(event) => update({q:event.target.value})} placeholder={connected ? 'Search email…' : 'Reference or name…'} /></label>}
+    {connected && !roles && <label className="text-sm">Status<select className="erp-input mt-1" value={state.active ?? ''} onChange={(event) => update({active:event.target.value})}><option value="">All users</option><option value="true">Active</option><option value="false">Disabled</option></select></label>}
+    {!connected && filters.filter((key) => key !== 'q').map((key) => <label key={key} className="text-sm">{label(key)}{key === 'status' ? <select className="erp-input mt-1" value={state[key] || ''} onChange={(event) => update({[key]:event.target.value})}><option value="">All statuses</option>{recordStates.map((value) => <option key={value} value={value}>{label(value)}</option>)}</select> : <input className="erp-input mt-1" type={(key.startsWith('date_') || key === 'as_of') ? 'date' : 'text'} value={state[key] || ''} onChange={(event) => update({[key]:event.target.value})} />}</label>)}
+  </div>{dateError && <p role="alert" className="mt-3 text-sm text-red-600">End date must be on or after start date.</p>}<div className="mt-3 flex flex-wrap items-center justify-between gap-3"><p className="text-xs text-slate-500">Filters are kept in the page URL.{roles ? ' Roles are ordered by name.' : connected ? ' Users are ordered by email.' : ''}</p><Button variant="secondary" onClick={() => update(Object.fromEntries(['q','active','date_from','date_to','status','warehouse_id','product_id','batch_id','partner_id','sort','page'].map((key) => [key,''])))}>Clear filters</Button></div></section>
+}

@@ -1,0 +1,1 @@
+export default function ChartCard({title,description,children}) { return <section className="erp-panel p-5"><h2 className="font-semibold">{title}</h2>{description&&<p className="mt-2 text-sm text-slate-500">{description}</p>}<div className="mt-5">{children}</div></section> }
