@@ -8,29 +8,212 @@ depends_on = None
 
 
 def upgrade():
-    op.execute('\nCREATE TABLE businesses (\n\tslug VARCHAR(80) NOT NULL, \n\tname VARCHAR(160) NOT NULL, \n\tactive BOOLEAN NOT NULL, \n\tid UUID NOT NULL, \n\tcreated_at TIMESTAMP WITH TIME ZONE NOT NULL, \n\tCONSTRAINT pk_businesses PRIMARY KEY (id), \n\tCONSTRAINT uq_businesses_slug UNIQUE (slug)\n)\n\n')
-    op.execute('\nCREATE TABLE permissions (\n\tcode VARCHAR(100) NOT NULL, \n\tCONSTRAINT pk_permissions PRIMARY KEY (code)\n)\n\n')
-    op.execute("\nCREATE TABLE accounts (\n\tbusiness_id UUID NOT NULL, \n\tcode VARCHAR(40) NOT NULL, \n\tname VARCHAR(160) NOT NULL, \n\tkind VARCHAR(20) NOT NULL, \n\tactive BOOLEAN NOT NULL, \n\tid UUID NOT NULL, \n\tcreated_at TIMESTAMP WITH TIME ZONE NOT NULL, \n\tCONSTRAINT pk_accounts PRIMARY KEY (id), \n\tCONSTRAINT uq_accounts_business_id_code UNIQUE (business_id, code), \n\tCONSTRAINT uq_accounts_business_id_id UNIQUE (business_id, id), \n\tCONSTRAINT ck_accounts_account_kind CHECK (kind IN ('asset','liability','equity','income','expense')), \n\tCONSTRAINT fk_accounts_business_id_businesses FOREIGN KEY(business_id) REFERENCES businesses (id)\n)\n\n")
-    op.execute('\nCREATE TABLE business_settings (\n\tbusiness_id UUID NOT NULL, \n\tcurrency VARCHAR(3) NOT NULL, \n\ttimezone VARCHAR(64) NOT NULL, \n\tversion INTEGER NOT NULL, \n\tCONSTRAINT pk_business_settings PRIMARY KEY (business_id), \n\tCONSTRAINT ck_business_settings_version_positive CHECK (version > 0), \n\tCONSTRAINT fk_business_settings_business_id_businesses FOREIGN KEY(business_id) REFERENCES businesses (id)\n)\n\n')
-    op.execute('\nCREATE TABLE document_sequences (\n\tbusiness_id UUID NOT NULL, \n\tdocument_type VARCHAR(50) NOT NULL, \n\tyear INTEGER NOT NULL, \n\tnext_value INTEGER NOT NULL, \n\tCONSTRAINT pk_document_sequences PRIMARY KEY (business_id, document_type, year), \n\tCONSTRAINT ck_document_sequences_next_positive CHECK (next_value > 0), \n\tCONSTRAINT fk_document_sequences_business_id_businesses FOREIGN KEY(business_id) REFERENCES businesses (id)\n)\n\n')
-    op.execute('\nCREATE TABLE idempotency_records (\n\tbusiness_id UUID NOT NULL, \n\toperation VARCHAR(100) NOT NULL, \n\tkey VARCHAR(128) NOT NULL, \n\trequest_hash VARCHAR(64) NOT NULL, \n\tresult_id UUID NOT NULL, \n\tid UUID NOT NULL, \n\tcreated_at TIMESTAMP WITH TIME ZONE NOT NULL, \n\tCONSTRAINT pk_idempotency_records PRIMARY KEY (id), \n\tCONSTRAINT uq_idempotency_records_business_id_operation_key UNIQUE (business_id, operation, key), \n\tCONSTRAINT fk_idempotency_records_business_id_businesses FOREIGN KEY(business_id) REFERENCES businesses (id)\n)\n\n')
-    op.execute('\nCREATE TABLE roles (\n\tbusiness_id UUID NOT NULL, \n\tname VARCHAR(80) NOT NULL, \n\tsystem BOOLEAN NOT NULL, \n\tversion INTEGER NOT NULL, \n\tid UUID NOT NULL, \n\tcreated_at TIMESTAMP WITH TIME ZONE NOT NULL, \n\tCONSTRAINT pk_roles PRIMARY KEY (id), \n\tCONSTRAINT uq_roles_business_id_name UNIQUE (business_id, name), \n\tCONSTRAINT uq_roles_business_id_id UNIQUE (business_id, id), \n\tCONSTRAINT fk_roles_business_id_businesses FOREIGN KEY(business_id) REFERENCES businesses (id)\n)\n\n')
-    op.execute('CREATE INDEX ix_roles_business_id ON roles (business_id)')
-    op.execute('\nCREATE TABLE users (\n\tbusiness_id UUID NOT NULL, \n\temail VARCHAR(254) NOT NULL, \n\tname VARCHAR(160) NOT NULL, \n\tpassword_hash VARCHAR(512) NOT NULL, \n\tactive BOOLEAN NOT NULL, \n\tversion INTEGER NOT NULL, \n\tid UUID NOT NULL, \n\tcreated_at TIMESTAMP WITH TIME ZONE NOT NULL, \n\tCONSTRAINT pk_users PRIMARY KEY (id), \n\tCONSTRAINT uq_users_business_id_email UNIQUE (business_id, email), \n\tCONSTRAINT uq_users_business_id_id UNIQUE (business_id, id), \n\tCONSTRAINT ck_users_email_normalized CHECK (email = lower(email)), \n\tCONSTRAINT ck_users_version_positive CHECK (version > 0), \n\tCONSTRAINT fk_users_business_id_businesses FOREIGN KEY(business_id) REFERENCES businesses (id)\n)\n\n')
-    op.execute('CREATE INDEX ix_users_business_id ON users (business_id)')
-    op.execute('\nCREATE TABLE audit_logs (\n\tbusiness_id UUID NOT NULL, \n\tactor_id UUID, \n\taction VARCHAR(100) NOT NULL, \n\tresource_id VARCHAR(100) NOT NULL, \n\trequest_id VARCHAR(36), \n\tid UUID NOT NULL, \n\tcreated_at TIMESTAMP WITH TIME ZONE NOT NULL, \n\tCONSTRAINT pk_audit_logs PRIMARY KEY (id), \n\tCONSTRAINT fk_audit_logs_business_id_users FOREIGN KEY(business_id, actor_id) REFERENCES users (business_id, id), \n\tCONSTRAINT fk_audit_logs_business_id_businesses FOREIGN KEY(business_id) REFERENCES businesses (id)\n)\n\n')
-    op.execute('CREATE INDEX ix_audit_business_created ON audit_logs (business_id, created_at)')
-    op.execute('\nCREATE TABLE auth_sessions (\n\tbusiness_id UUID NOT NULL, \n\tuser_id UUID NOT NULL, \n\trefresh_hash VARCHAR(64) NOT NULL, \n\texpires_at TIMESTAMP WITH TIME ZONE NOT NULL, \n\trevoked_at TIMESTAMP WITH TIME ZONE, \n\tid UUID NOT NULL, \n\tcreated_at TIMESTAMP WITH TIME ZONE NOT NULL, \n\tCONSTRAINT pk_auth_sessions PRIMARY KEY (id), \n\tCONSTRAINT fk_auth_sessions_business_id_users FOREIGN KEY(business_id, user_id) REFERENCES users (business_id, id), \n\tCONSTRAINT uq_auth_sessions_refresh_hash UNIQUE (refresh_hash)\n)\n\n')
-    op.execute('CREATE INDEX ix_auth_sessions_expires_at ON auth_sessions (expires_at)')
-    op.execute('CREATE INDEX ix_auth_sessions_user_id ON auth_sessions (user_id)')
-    op.execute('\nCREATE TABLE journal_entries (\n\ttransaction_id BIGINT DEFAULT txid_current() NOT NULL, \n\tbusiness_id UUID NOT NULL, \n\tsource_type VARCHAR(60) NOT NULL, \n\tsource_id VARCHAR(100) NOT NULL, \n\tevent VARCHAR(60) NOT NULL, \n\taccounting_date DATE NOT NULL, \n\tcurrency VARCHAR(3) NOT NULL, \n\tactor_id UUID NOT NULL, \n\tid UUID NOT NULL, \n\tcreated_at TIMESTAMP WITH TIME ZONE NOT NULL, \n\tCONSTRAINT pk_journal_entries PRIMARY KEY (id), \n\tCONSTRAINT uq_journal_entries_business_id_source_type_source_id_event UNIQUE (business_id, source_type, source_id, event), \n\tCONSTRAINT uq_journal_entries_business_id_id UNIQUE (business_id, id), \n\tCONSTRAINT fk_journal_entries_business_id_users FOREIGN KEY(business_id, actor_id) REFERENCES users (business_id, id), \n\tCONSTRAINT fk_journal_entries_business_id_businesses FOREIGN KEY(business_id) REFERENCES businesses (id)\n)\n\n')
-    op.execute('CREATE INDEX ix_journal_business_date ON journal_entries (business_id, accounting_date)')
-    op.execute('\nCREATE TABLE role_permissions (\n\trole_id UUID NOT NULL, \n\tpermission_code VARCHAR(100) NOT NULL, \n\tCONSTRAINT pk_role_permissions PRIMARY KEY (role_id, permission_code), \n\tCONSTRAINT fk_role_permissions_role_id_roles FOREIGN KEY(role_id) REFERENCES roles (id), \n\tCONSTRAINT fk_role_permissions_permission_code_permissions FOREIGN KEY(permission_code) REFERENCES permissions (code)\n)\n\n')
-    op.execute('\nCREATE TABLE user_roles (\n\tbusiness_id UUID NOT NULL, \n\tuser_id UUID NOT NULL, \n\trole_id UUID NOT NULL, \n\tCONSTRAINT pk_user_roles PRIMARY KEY (business_id, user_id, role_id), \n\tCONSTRAINT fk_user_roles_business_id_users FOREIGN KEY(business_id, user_id) REFERENCES users (business_id, id), \n\tCONSTRAINT fk_user_roles_business_id_roles FOREIGN KEY(business_id, role_id) REFERENCES roles (business_id, id)\n)\n\n')
-    op.execute('CREATE INDEX ix_user_roles_role ON user_roles (business_id, role_id)')
-    op.execute('\nCREATE TABLE journal_entry_lines (\n\tbusiness_id UUID NOT NULL, \n\tentry_id UUID NOT NULL, \n\taccount_id UUID NOT NULL, \n\tdebit NUMERIC(20, 6) NOT NULL, \n\tcredit NUMERIC(20, 6) NOT NULL, \n\tid UUID NOT NULL, \n\tcreated_at TIMESTAMP WITH TIME ZONE NOT NULL, \n\tCONSTRAINT pk_journal_entry_lines PRIMARY KEY (id), \n\tCONSTRAINT fk_journal_entry_lines_business_id_journal_entries FOREIGN KEY(business_id, entry_id) REFERENCES journal_entries (business_id, id), \n\tCONSTRAINT fk_journal_entry_lines_business_id_accounts FOREIGN KEY(business_id, account_id) REFERENCES accounts (business_id, id), \n\tCONSTRAINT ck_journal_entry_lines_one_positive_side CHECK ((debit > 0 AND credit = 0) OR (credit > 0 AND debit = 0)), \n\tCONSTRAINT ck_journal_entry_lines_finite_amount CHECK (debit < 100000000000000 AND credit < 100000000000000)\n)\n\n')
-    op.execute('CREATE INDEX ix_journal_entry_lines_account_id ON journal_entry_lines (account_id)')
-    op.execute('CREATE INDEX ix_journal_entry_lines_entry_id ON journal_entry_lines (entry_id)')
+    op.execute("""
+CREATE TABLE businesses (
+	slug VARCHAR(80) NOT NULL,
+	name VARCHAR(160) NOT NULL,
+	active BOOLEAN NOT NULL,
+	id UUID NOT NULL,
+	created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+	CONSTRAINT pk_businesses PRIMARY KEY (id),
+	CONSTRAINT uq_businesses_slug UNIQUE (slug)
+)
+
+""")
+    op.execute("""
+CREATE TABLE permissions (
+	code VARCHAR(100) NOT NULL,
+	CONSTRAINT pk_permissions PRIMARY KEY (code)
+)
+
+""")
+    op.execute("""
+CREATE TABLE accounts (
+	business_id UUID NOT NULL,
+	code VARCHAR(40) NOT NULL,
+	name VARCHAR(160) NOT NULL,
+	kind VARCHAR(20) NOT NULL,
+	active BOOLEAN NOT NULL,
+	id UUID NOT NULL,
+	created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+	CONSTRAINT pk_accounts PRIMARY KEY (id),
+	CONSTRAINT uq_accounts_business_id_code UNIQUE (business_id, code),
+	CONSTRAINT uq_accounts_business_id_id UNIQUE (business_id, id),
+	CONSTRAINT ck_accounts_account_kind CHECK (kind IN ('asset','liability','equity','income','expense')),
+	CONSTRAINT fk_accounts_business_id_businesses FOREIGN KEY(business_id) REFERENCES businesses (id)
+)
+
+""")
+    op.execute("""
+CREATE TABLE business_settings (
+	business_id UUID NOT NULL,
+	currency VARCHAR(3) NOT NULL,
+	timezone VARCHAR(64) NOT NULL,
+	version INTEGER NOT NULL,
+	CONSTRAINT pk_business_settings PRIMARY KEY (business_id),
+	CONSTRAINT ck_business_settings_version_positive CHECK (version > 0),
+	CONSTRAINT fk_business_settings_business_id_businesses FOREIGN KEY(business_id) REFERENCES businesses (id)
+)
+
+""")
+    op.execute("""
+CREATE TABLE document_sequences (
+	business_id UUID NOT NULL,
+	document_type VARCHAR(50) NOT NULL,
+	year INTEGER NOT NULL,
+	next_value INTEGER NOT NULL,
+	CONSTRAINT pk_document_sequences PRIMARY KEY (business_id, document_type, year),
+	CONSTRAINT ck_document_sequences_next_positive CHECK (next_value > 0),
+	CONSTRAINT fk_document_sequences_business_id_businesses FOREIGN KEY(business_id) REFERENCES businesses (id)
+)
+
+""")
+    op.execute("""
+CREATE TABLE idempotency_records (
+	business_id UUID NOT NULL,
+	operation VARCHAR(100) NOT NULL,
+	key VARCHAR(128) NOT NULL,
+	request_hash VARCHAR(64) NOT NULL,
+	result_id UUID NOT NULL,
+	id UUID NOT NULL,
+	created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+	CONSTRAINT pk_idempotency_records PRIMARY KEY (id),
+	CONSTRAINT uq_idempotency_records_business_id_operation_key UNIQUE (business_id, operation, key),
+	CONSTRAINT fk_idempotency_records_business_id_businesses FOREIGN KEY(business_id) REFERENCES businesses (id)
+)
+
+""")
+    op.execute("""
+CREATE TABLE roles (
+	business_id UUID NOT NULL,
+	name VARCHAR(80) NOT NULL,
+	system BOOLEAN NOT NULL,
+	version INTEGER NOT NULL,
+	id UUID NOT NULL,
+	created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+	CONSTRAINT pk_roles PRIMARY KEY (id),
+	CONSTRAINT uq_roles_business_id_name UNIQUE (business_id, name),
+	CONSTRAINT uq_roles_business_id_id UNIQUE (business_id, id),
+	CONSTRAINT fk_roles_business_id_businesses FOREIGN KEY(business_id) REFERENCES businesses (id)
+)
+
+""")
+    op.execute("""CREATE INDEX ix_roles_business_id ON roles (business_id)""")
+    op.execute("""
+CREATE TABLE users (
+	business_id UUID NOT NULL,
+	email VARCHAR(254) NOT NULL,
+	name VARCHAR(160) NOT NULL,
+	password_hash VARCHAR(512) NOT NULL,
+	active BOOLEAN NOT NULL,
+	version INTEGER NOT NULL,
+	id UUID NOT NULL,
+	created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+	CONSTRAINT pk_users PRIMARY KEY (id),
+	CONSTRAINT uq_users_business_id_email UNIQUE (business_id, email),
+	CONSTRAINT uq_users_business_id_id UNIQUE (business_id, id),
+	CONSTRAINT ck_users_email_normalized CHECK (email = lower(email)),
+	CONSTRAINT ck_users_version_positive CHECK (version > 0),
+	CONSTRAINT fk_users_business_id_businesses FOREIGN KEY(business_id) REFERENCES businesses (id)
+)
+
+""")
+    op.execute("""CREATE INDEX ix_users_business_id ON users (business_id)""")
+    op.execute("""
+CREATE TABLE audit_logs (
+	business_id UUID NOT NULL,
+	actor_id UUID,
+	action VARCHAR(100) NOT NULL,
+	resource_id VARCHAR(100) NOT NULL,
+	request_id VARCHAR(36),
+	id UUID NOT NULL,
+	created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+	CONSTRAINT pk_audit_logs PRIMARY KEY (id),
+	CONSTRAINT fk_audit_logs_business_id_users FOREIGN KEY(business_id, actor_id) REFERENCES users (business_id, id),
+	CONSTRAINT fk_audit_logs_business_id_businesses FOREIGN KEY(business_id) REFERENCES businesses (id)
+)
+
+""")
+    op.execute("""CREATE INDEX ix_audit_business_created ON audit_logs (business_id, created_at)""")
+    op.execute("""
+CREATE TABLE auth_sessions (
+	business_id UUID NOT NULL,
+	user_id UUID NOT NULL,
+	refresh_hash VARCHAR(64) NOT NULL,
+	expires_at TIMESTAMP WITH TIME ZONE NOT NULL,
+	revoked_at TIMESTAMP WITH TIME ZONE,
+	id UUID NOT NULL,
+	created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+	CONSTRAINT pk_auth_sessions PRIMARY KEY (id),
+	CONSTRAINT fk_auth_sessions_business_id_users FOREIGN KEY(business_id, user_id) REFERENCES users (business_id, id),
+	CONSTRAINT uq_auth_sessions_refresh_hash UNIQUE (refresh_hash)
+)
+
+""")
+    op.execute("""CREATE INDEX ix_auth_sessions_expires_at ON auth_sessions (expires_at)""")
+    op.execute("""CREATE INDEX ix_auth_sessions_user_id ON auth_sessions (user_id)""")
+    op.execute("""
+CREATE TABLE journal_entries (
+	transaction_id BIGINT DEFAULT txid_current() NOT NULL,
+	business_id UUID NOT NULL,
+	source_type VARCHAR(60) NOT NULL,
+	source_id VARCHAR(100) NOT NULL,
+	event VARCHAR(60) NOT NULL,
+	accounting_date DATE NOT NULL,
+	currency VARCHAR(3) NOT NULL,
+	actor_id UUID NOT NULL,
+	id UUID NOT NULL,
+	created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+	CONSTRAINT pk_journal_entries PRIMARY KEY (id),
+	CONSTRAINT uq_journal_entries_business_id_source_type_source_id_event UNIQUE (business_id, source_type, source_id, event),
+	CONSTRAINT uq_journal_entries_business_id_id UNIQUE (business_id, id),
+	CONSTRAINT fk_journal_entries_business_id_users FOREIGN KEY(business_id, actor_id) REFERENCES users (business_id, id),
+	CONSTRAINT fk_journal_entries_business_id_businesses FOREIGN KEY(business_id) REFERENCES businesses (id)
+)
+
+""")
+    op.execute("""CREATE INDEX ix_journal_business_date ON journal_entries (business_id, accounting_date)""")
+    op.execute("""
+CREATE TABLE role_permissions (
+	role_id UUID NOT NULL,
+	permission_code VARCHAR(100) NOT NULL,
+	CONSTRAINT pk_role_permissions PRIMARY KEY (role_id, permission_code),
+	CONSTRAINT fk_role_permissions_role_id_roles FOREIGN KEY(role_id) REFERENCES roles (id),
+	CONSTRAINT fk_role_permissions_permission_code_permissions FOREIGN KEY(permission_code) REFERENCES permissions (code)
+)
+
+""")
+    op.execute("""
+CREATE TABLE user_roles (
+	business_id UUID NOT NULL,
+	user_id UUID NOT NULL,
+	role_id UUID NOT NULL,
+	CONSTRAINT pk_user_roles PRIMARY KEY (business_id, user_id, role_id),
+	CONSTRAINT fk_user_roles_business_id_users FOREIGN KEY(business_id, user_id) REFERENCES users (business_id, id),
+	CONSTRAINT fk_user_roles_business_id_roles FOREIGN KEY(business_id, role_id) REFERENCES roles (business_id, id)
+)
+
+""")
+    op.execute("""CREATE INDEX ix_user_roles_role ON user_roles (business_id, role_id)""")
+    op.execute("""
+CREATE TABLE journal_entry_lines (
+	business_id UUID NOT NULL,
+	entry_id UUID NOT NULL,
+	account_id UUID NOT NULL,
+	debit NUMERIC(20, 6) NOT NULL,
+	credit NUMERIC(20, 6) NOT NULL,
+	id UUID NOT NULL,
+	created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+	CONSTRAINT pk_journal_entry_lines PRIMARY KEY (id),
+	CONSTRAINT fk_journal_entry_lines_business_id_journal_entries FOREIGN KEY(business_id, entry_id) REFERENCES journal_entries (business_id, id),
+	CONSTRAINT fk_journal_entry_lines_business_id_accounts FOREIGN KEY(business_id, account_id) REFERENCES accounts (business_id, id),
+	CONSTRAINT ck_journal_entry_lines_one_positive_side CHECK ((debit > 0 AND credit = 0) OR (credit > 0 AND debit = 0)),
+	CONSTRAINT ck_journal_entry_lines_finite_amount CHECK (debit < 100000000000000 AND credit < 100000000000000)
+)
+
+""")
+    op.execute("""CREATE INDEX ix_journal_entry_lines_account_id ON journal_entry_lines (account_id)""")
+    op.execute("""CREATE INDEX ix_journal_entry_lines_entry_id ON journal_entry_lines (entry_id)""")
     install_guards()
 
 

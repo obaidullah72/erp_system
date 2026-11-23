@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../auth/useAuth'
 import Input from '../components/ui/Input'
 import Button from '../components/ui/Button'
@@ -9,17 +9,16 @@ export default function LoginPage() {
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
   const location = useLocation()
-  const navigate = useNavigate()
+  const target = location.state?.from
+  const returnTo = target?.startsWith('/') && !target.startsWith('//') ? target : '/'
   if (loading) return <p role="status">Checking your session…</p>
-  if (user) return <Navigate to="/" replace />
+  if (user) return <Navigate to={returnTo} replace />
   async function submit(event) {
     event.preventDefault()
     setError(''); setBusy(true)
     const values = Object.fromEntries(new FormData(event.currentTarget))
     try {
       await login(values)
-      const target = location.state?.from
-      navigate(target?.startsWith('/') && !target.startsWith('//') ? target : '/', { replace: true })
     } catch (failure) { setError(failure.userMessage || 'Sign-in failed.') }
     finally { setBusy(false) }
   }

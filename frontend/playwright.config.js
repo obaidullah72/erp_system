@@ -2,7 +2,9 @@ import { defineConfig } from '@playwright/test'
 export default defineConfig({
   testDir: './tests/e2e', fullyParallel: false, workers: 1,
   use: { baseURL: 'http://127.0.0.1:5174', browserName: 'chromium', headless: true,
-    screenshot: 'only-on-failure', trace: 'retain-on-failure' },
+    screenshot: 'only-on-failure', trace: 'retain-on-failure',
+    launchOptions: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH
+      ? { executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH } : {} },
   webServer: [
     { command: '../backend/venv/bin/python ../backend/scripts/e2e_server.py',
       url: 'http://127.0.0.1:8001/api/v1/health/ready', reuseExistingServer: false, timeout: 30000 },

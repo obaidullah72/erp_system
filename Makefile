@@ -1,4 +1,4 @@
-.PHONY: help install backend frontend worker build lint test test-integration test-e2e test-local up down migrate health
+.PHONY: help install backend frontend worker build lint test test-integration test-e2e test-local up down migrate health contracts
 PYTHON ?= python3
 BACKEND_PYTHON := backend/venv/bin/python
 
@@ -51,3 +51,6 @@ migrate:
 health:
 	curl --fail --show-error http://localhost:8000/api/v1/health/live
 	curl --fail --show-error http://localhost:8000/api/v1/health/ready
+
+contracts:
+	cd backend && venv/bin/python -m scripts.export_openapi

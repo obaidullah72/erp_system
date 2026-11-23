@@ -1,6 +1,6 @@
 # /api/v1 contract baseline
 
-OpenAPI at `/openapi.json` and `/docs` (development only) describes **implemented HTTP routes only**. Planned paths below intentionally return 404 today. The internal posting and inventory contracts are Python contracts, not public HTTP endpoints. This baseline is version 1; incompatible wire changes require a new API version.
+OpenAPI at `/openapi.json` and `/docs` (development only) describes **implemented HTTP routes only**. Planned paths below intentionally return 404 today. The internal posting and inventory contracts are Python contracts, not public HTTP endpoints. The committed `docs/openapi.json` snapshot is regenerated with `make contracts`. This baseline is version 1; incompatible wire changes require a new API version.
 
 ## Implemented routes
 

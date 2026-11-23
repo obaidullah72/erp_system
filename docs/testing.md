@@ -1,42 +1,47 @@
-# Verification and implementation-session results
+# Repeatable verification
 
-## Commands
+## Commands and isolation
 
-- `make install` installs native development dependencies. Run it with package-registry access.
-- `make build` compiles the frontend for production.
-- `npm run lint --prefix frontend` checks JavaScript and React hook usage.
-- `make test` runs backend foundation contracts.
-- `make backend` starts the API; `make health` probes liveness and readiness over HTTP.
-- `cd backend && venv/bin/python -m alembic upgrade head` applies the baseline to a configured PostgreSQL database.
-- `ERP_TEST_DATABASE_URL=... make test` enables the optional real PostgreSQL test; use a dedicated local database and do not expose credentials in shell history.
-- `docker compose config --quiet` validates Compose with root `.env` populated.
+`make install` installs pinned native dependencies. `make lint` and `make build` check the frontend. `make test` runs backend tests with database tests explicitly skipped unless `ERP_TEST_DATABASE_URL` is supplied. `make test-integration` refuses to run without that URL; its database name must end in `_test`.
 
-## Observed results during this implementation
+`make test-local` creates a new local PostgreSQL cluster in a unique `/tmp/erp-foundation.*` directory, listens on loopback port 55439 (override ERP_TEST_PORT), runs backend and browser tests, then shuts it down with an EXIT trap. PostgreSQL binaries and a browser executable must be installed first. Logs are retained in the printed temporary directory for diagnosis.
 
-| Check | Result |
-| --- | --- |
-| Backend contract tests | 8 passed, 2 skipped (JWT test module lacked PyJWT; real-database integration lacked configuration) |
-| ASGI application startup/shutdown | Passed through FastAPI TestClient lifespan |
-| Actual liveness through ASGI transport | HTTP 200 with expected service payload, without a database |
-| Actual readiness through ASGI transport | HTTP 503 with sanitized unavailable payload; no local PostgreSQL connection was available |
-| Mocked readiness success and failure | Both passed, including SELECT 1 execution, rollback, and error redaction |
-| CORS, error envelopes, request IDs, validation redaction, settings | Passed contract tests |
-| Python compilation | Passed for app, migrations, and tests |
-| Alembic offline baseline SQL | Generated successfully; creates only alembic_version |
-| Base and production-override Compose configuration | Validated with nonsecret validation-only environment values |
-| Frontend ESLint | Passed after correcting effect-driven synchronous state update |
-| Frontend production build | Attempted; blocked because @tailwindcss/vite and other newly required packages are not installed |
-| Dependency installation | npm and pip failed DNS resolution under restricted networking; requested elevated downloads were declined |
-| Actual PostgreSQL availability | pg_isready reported no response on 127.0.0.1:5432 |
-| Containers and online migration | Not run: Docker daemon is unavailable |
-| Browser/responsive visual QA | Not run: dependency installation prevented starting the completed frontend |
+Integration fixtures create unique schemas, apply real Alembic migrations and remove only those schemas. They exclude the public schema from search_path. Test settings ignore `backend/.env` and override the database/signing key before application import. The dedicated database is never the development ERP database. Browser verification independently creates a unique schema, bootstraps test-only credentials, starts API/Vite on 8001/5174, and drops that schema on graceful shutdown. Tests do not rely on production users or accounts.
 
-The pre-existing Python environment contains SQLAlchemy 2.1.8; tests above ran against that installed version. The manifest correctly constrains the required SQLAlchemy 2.0 series, but a fresh installation and verification against 2.0 remain pending. PyJWT tests must run after installation. The existing FastAPI/Starlette installation emitted a TestClient/httpx deprecation warning; the test run passed.
+```sh
+# Existing dedicated test PostgreSQL:
+export ERP_TEST_DATABASE_URL='postgresql+psycopg://erp_test:password@127.0.0.1:5432/erp_test'
+make test-integration
+cd frontend && npx playwright install chromium && cd ..
+make test-e2e
+# Or provision the local disposable cluster automatically:
+make test-local
+```
 
-Frontend dependencies are bounded in package.json. The starter package-lock.json was stale after adding the mandatory stack and was removed; run npm install to generate a complete lockfile, commit it, and use npm ci in CI. Neither dependency resolution nor production frontend build is claimed successful. Containers, PostgreSQL success-path connectivity, online migrations and visual UI behavior still require verification in an environment with dependencies and infrastructure available.
+Playwright 1.65.1's browser downloader does not support macOS 13. On that host, use an already-installed compatible Chromium executable:
 
-## Foundation test coverage
+```sh
+export PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH='/absolute/path/to/chrome-headless-shell'
+make test-e2e
+```
 
-Health tests verify database independence, SELECT 1 success, database-failure 503 and rollback, redaction, CORS allow/deny, safe 404/500 and validation errors, generated request IDs, and unsafe settings rejection. Security tests verify JWT claims/signatures and expiration when PyJWT is installed. The opt-in PostgreSQL test executes only SELECT 1 and closes its engine; it does not create a schema.
+The override only selects the test browser; no application behavior changes. This workspace has a Chromium headless shell under `~/Library/Caches/ms-playwright/chromium_headless_shell-1228/chrome-headless-shell-mac-x64/chrome-headless-shell`. On supported hosts, use Playwright's normal browser installer. Screenshots/traces live under ignored `frontend/test-results`; failure artifacts are retained, and the mobile check records a full-page screenshot.
 
-Future phases require concurrency, idempotency, financial invariant, migration, authorization and end-to-end tests when their behavior exists. Phase 1 does not assert any business-module correctness.
+## Coverage
+
+- Settings validation and hidden secret inputs; JWT signature/audience/expiry; independent liveness and sanitized readiness failure; CORS, generated request IDs, redacted JSON errors and validation details.
+- Actual migration upgrade/downgrade/re-upgrade and ORM schema parity; first-admin bootstrap and refusal; exact nine-role seed catalogue; password hashing.
+- Login, current-user lookup, rotation, old-refresh replay revocation, absolute session expiry, logout and disabled-user revocation.
+- Direct Viewer/Admin API denials, protected administrator grants, configurable responsibility roles, last-admin preservation, cross-business API and FK isolation, optimistic settings conflicts, duplicate-user rollback.
+- Balanced posting, rejected unbalanced/invalid-mapping/closed-period-hook requests, base currency freeze, duplicate sources, changed idempotency payloads, concurrent duplicate and same-key submissions, outer transaction rollback.
+- Direct PostgreSQL unbalanced-commit rejection, immutable journal/audit rows and forbidden later line insertion.
+- Structured log checks exclude password/email/token/query/path inputs; diagnostic worker ping has no business effects.
+- Real desktop/mobile browser login, invalid credentials, protected-path return, cookie session restoration, logout, unavailable metrics, responsive navigation, persisted theme, live health responses and horizontal-overflow check.
+
+## Recorded environment and limits
+
+Python 3.11, Node 22.23.2, PostgreSQL 16.15. Fresh Python installation used `requirements-dev.lock`; frontend used `npm ci`. Compose targets PostgreSQL 17; that container version was not exercised here. Base and production-override Compose configurations were validated using nonsecret placeholders without printing resolved configuration.
+
+Docker Engine is unavailable in this workspace. Container image builds, Compose startup and live Redis/Celery broker delivery remain unverified here. Celery configuration and diagnostic task execution are checked without claiming business jobs exist. The installed Starlette test client emits one httpx deprecation warning; it does not fail checks. Final consolidated `make test-local`: **30 backend checks and 2 browser checks passed**, with automatic temporary-cluster shutdown. Frontend lint/build and both Compose configuration checks passed. See the Stage 1 completion record for the full evidence table.
+
+Migrations and tests make no claim about later module correctness. Inventory protocols, open-period policy, planned contracts and worker stubs are documented extension points.

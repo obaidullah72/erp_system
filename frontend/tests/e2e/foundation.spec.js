@@ -10,7 +10,7 @@ async function signIn(page) {
   await expect(page.getByRole('heading', { name: 'Welcome, First administrator' })).toBeVisible()
 }
 
-test('connected login, refresh, truthful metrics and logout', async ({ page }) => {
+test('connected login, refresh, truthful metrics and logout', async ({ page }, testInfo) => {
   await page.goto('/system')
   await expect(page).toHaveURL(/\/login$/)
   await page.getByLabel('Business code').fill('demo')
@@ -21,8 +21,10 @@ test('connected login, refresh, truthful metrics and logout', async ({ page }) =
   await page.getByLabel('Password', { exact: true }).fill('browser-test-password')
   await page.getByRole('button', { name: 'Sign in', exact: true }).click()
   await expect(page).toHaveURL(/\/system$/)
+  await expect(page.getByRole('heading', { name: 'System status', exact: true })).toBeVisible({ timeout: 15000 })
   await page.getByRole('link', { name: 'Dashboard', exact: true }).click()
   await expect(page.getByText('Metrics are not available yet.', { exact: false })).toHaveCount(4)
+  await page.screenshot({ path: testInfo.outputPath('stage1-desktop.png'), fullPage: true })
   await page.reload()
   await expect(page.getByRole('heading', { name: 'Welcome, First administrator' })).toBeVisible()
   const storage = await page.evaluate(() => ({ ...localStorage }))
@@ -40,12 +42,14 @@ test('mobile navigation, theme persistence and no horizontal overflow', async ({
   await page.getByRole('button', { name: 'Toggle navigation' }).click()
   await expect(page.getByRole('complementary', { name: 'Main navigation' })).toBeVisible()
   await page.getByRole('link', { name: 'System status', exact: true }).click()
+  await expect(page.getByRole('heading', { name: 'System status', exact: true })).toBeVisible({ timeout: 15000 })
   await expect(page.getByRole('complementary', { name: 'Main navigation' })).toBeHidden()
   await page.getByRole('button', { name: /Switch to .* theme/ }).click()
   const theme = await page.evaluate(() => localStorage.getItem('erp-theme'))
   await page.reload()
   await expect(page.getByRole('button', { name: /Switch to .* theme/ })).toBeVisible()
   expect(await page.evaluate(() => document.documentElement.classList.contains('dark'))).toBe(theme === 'dark')
+  await expect(page.getByText('Operational', { exact: true })).toHaveCount(2, { timeout: 15000 })
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBeTruthy()
   await page.screenshot({ path: testInfo.outputPath('stage1-mobile.png'), fullPage: true })
 })

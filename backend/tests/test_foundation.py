@@ -108,3 +108,11 @@ def test_settings_reject_unsafe_production_and_wildcard_cors():
         Settings(_env_file=None, database_url="sqlite:///erp.db")
     with pytest.raises(ValidationError):
         Settings(_env_file=None, jwt_secret_key="too-short")
+
+
+def test_settings_validation_does_not_print_secret_inputs():
+    with pytest.raises(ValidationError) as captured:
+        Settings(_env_file=None, jwt_secret_key='secret-too-short',
+                 database_url='postgresql+psycopg://erp:database-secret@localhost/erp')
+    assert 'secret-too-short' not in str(captured.value)
+    assert 'database-secret' not in str(captured.value)

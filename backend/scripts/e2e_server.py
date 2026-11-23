@@ -14,7 +14,7 @@ schema = 'e2e_' + uuid4().hex
 admin = create_engine(url)
 with admin.begin() as conn:
     conn.execute(text(f'CREATE SCHEMA {schema}'))
-os.environ['DATABASE_URL'] = make_url(url).update_query_dict({'options':f'-csearch_path={schema},public'}).render_as_string(hide_password=False)
+os.environ['DATABASE_URL'] = make_url(url).update_query_dict({'options':f'-csearch_path={schema}'}).render_as_string(hide_password=False)
 os.environ['JWT_SECRET_KEY'] = 'browser-test-only-signing-key-not-for-real-use'
 os.environ['ENVIRONMENT'] = 'test'
 os.environ['CORS_ORIGINS'] = '["http://127.0.0.1:5174","http://localhost:5174"]'

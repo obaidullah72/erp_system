@@ -30,7 +30,7 @@ def database():
     admin = create_engine(url)
     with admin.begin() as conn:
         conn.execute(text(f'CREATE SCHEMA {schema}'))
-    engine = create_engine(url, connect_args={'options': f'-csearch_path={schema},public'}, hide_parameters=True)
+    engine = create_engine(url, connect_args={'options': f'-csearch_path={schema}'}, hide_parameters=True)
     try:
         with engine.begin() as conn:
             cfg = Config(str(Path(__file__).parents[1] / 'alembic.ini'))

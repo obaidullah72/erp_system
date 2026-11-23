@@ -28,7 +28,7 @@ Names follow the revised user-approved Stage 1 list exactly:
 
 ## Logs, secrets and operational boundary
 
-Ignored environment files or a secret manager supply credentials. JWT keys require ≥32 characters and reject example placeholders. Production requires a signing key and database credentials. Explicit HTTP(S) CORS origins cannot contain wildcards, userinfo or paths. Database URLs require the PostgreSQL psycopg driver. Access/refresh lifetimes are bounded. Frontend VITE values are public.
+Ignored environment files or a secret manager supply credentials. A JWT signing key is required at startup in every environment. JWT keys require ≥32 characters and reject example placeholders. Production requires a signing key and database credentials. Explicit HTTP(S) CORS origins cannot contain wildcards, userinfo or paths. Database URLs require the PostgreSQL psycopg driver. Access/refresh lifetimes are bounded. Frontend VITE values are public.
 
 Request logs are structured JSON with generated request ID, method, route template, status and elapsed milliseconds. They omit request/response bodies, headers, query strings, concrete path values and database parameters. Exceptions return coarse messages and validation field locations/types, never raw submitted values. Audit logs store only actor/action/resource/request ID; database triggers prevent update/delete. Health does not reveal credentials, addresses, schema or configuration.
 

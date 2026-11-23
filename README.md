@@ -20,7 +20,7 @@ Compose starts PostgreSQL, applies migrations in a one-shot service, starts the 
 
 ## Native development
 
-Requires Python 3.11, Node 22.12+ (Node 22 recommended), npm, and PostgreSQL 16/17. Redis is needed only to run the worker; authentication and posting do not depend on Redis.
+Requires Python 3.11, Node 22.12+ (Node 22 recommended), npm, and PostgreSQL 16/17. Redis is needed only to run the worker; authentication and posting do not depend on Redis. With root Compose secrets configured, `docker compose up -d db redis` provides both on loopback ports 5432/6379.
 
 ```sh
 cp backend/.env.example backend/.env

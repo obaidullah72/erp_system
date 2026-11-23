@@ -1,3 +1,4 @@
+import os
 from functools import lru_cache
 from pathlib import Path
 from typing import Literal
@@ -10,14 +11,14 @@ from sqlalchemy.engine import make_url
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=Path(__file__).resolve().parents[2] / ".env",
-        env_file_encoding="utf-8", extra="ignore",
+        env_file_encoding="utf-8", extra="ignore", hide_input_in_errors=True,
     )
     app_name: str = "ERP Foundation"
     environment: Literal["development", "test", "production"] = "development"
     log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR"] = "INFO"
     database_url: SecretStr = SecretStr("postgresql+psycopg://erp@localhost:5432/erp")
     cors_origins: list[str] = ["http://localhost:5173", "http://127.0.0.1:5173"]
-    jwt_secret_key: SecretStr | None = None
+    jwt_secret_key: SecretStr
     jwt_issuer: str = "erp-api"
     jwt_audience: str = "erp-web"
     access_token_minutes: int = 15
@@ -73,4 +74,4 @@ class Settings(BaseSettings):
 
 @lru_cache
 def get_settings() -> Settings:
-    return Settings()
+    return Settings(_env_file=None) if os.environ.get("ENVIRONMENT") == "test" else Settings()

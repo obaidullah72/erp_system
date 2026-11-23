@@ -1,7 +1,9 @@
 # Frontend foundation
 
-React + Vite, JavaScript, Tailwind CSS v4 (Vite plugin and CSS import), React Router DOM, Axios, React Hook Form, Zod, Recharts, and Lucide React.
+React/Vite, Tailwind v4, React Router, Axios and shared UI controls. Install with `npm ci`; start with `npm run dev`. See the root README for migrations, first-admin bootstrap and API startup.
 
-Run `npm install`, then `npm run dev` from this directory. See the root README for backend/database setup. `npm run build` creates `dist`; `npm run preview` only serves static output and does not provide the development API proxy. Use Compose Nginx or a separately configured `VITE_API_URL` for API access from the built app.
+`/login` is public; `/`, `/system` and `/roadmap` use the authenticated dashboard shell. Login connects to FastAPI, preserves the requested protected destination, keeps access tokens only in memory and restores sessions through the HttpOnly refresh cookie. Logout revokes the server session. Themes persist locally; mobile navigation collapses after selection. The dashboard explicitly marks unimplemented transaction metrics unavailable.
 
-Routes: `/system` (real health checks), `/foundation` (scope and memory-only validation form), `/roadmap` (planned phases). No business dashboards or simulated records. Chart samples exist only in page memory; failures are gaps, never zero-duration successes.
+`npm run lint` and `npm run build` verify source/assets. `npm run test:e2e` requires ERP_TEST_DATABASE_URL pointing to a dedicated *_test PostgreSQL database. It starts isolated API/Vite servers and checks desktop/mobile flows. Install Chromium with `npx playwright install chromium`, or set PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH on hosts where that download is unsupported; details are in docs/testing.md.
+
+Vite proxies `/api` to port 8000; container Nginx proxies to the API service. `npm run preview` only serves built static assets and does not provide that API proxy. VITE_API_URL is public build configuration. Keep a same-origin deployment for refresh-cookie compatibility. System status loads its chart code separately from login/dashboard.
